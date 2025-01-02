@@ -1,3 +1,6 @@
 from django.test import TestCase
 
-# Create your tests here.
+class GalleryIndexViewSpecs(TestCase):
+    def test_that_gallery_url_exists(self):
+        response = self.client.get("/gallery/")
+        self.assertIs(response.status_code, 200)
