@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Gallery</title>
+    <style>
+        img {
+            width: 99%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <table id="gallery">
-
+        <tr id="wands">
+            {% for uri_part in uri_parts %}
+            <td>
+                <a href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ uri_part.file }}">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/{{ uri_part.prefix }}/{{ uri_part.file }}" alt=""/>
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
     </table>
 </body>
 </html>
