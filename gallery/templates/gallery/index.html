@@ -13,12 +13,21 @@
 <body>
     <table id="gallery">
         <tr id="wands">
-            {% for uri_part in uri_parts %}
+            {% for uri_part in uri_parts.wands %}
             <td>
                 <a href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ uri_part.file }}">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/{{ uri_part.prefix }}/{{ uri_part.file }}" alt=""/>
                 </a>
             </td>
+            {% endfor %}
+        </tr>
+        <tr id="cups">
+            {% for uri_part in uri_parts.cups %}
+                <td>
+                    <a href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ uri_part.file }}">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/{{ uri_part.prefix }}/{{ uri_part.file }}" alt=""/>
+                    </a>
+                </td>
             {% endfor %}
         </tr>
     </table>

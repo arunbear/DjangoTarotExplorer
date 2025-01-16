@@ -1,11 +1,11 @@
 from collections import namedtuple
 from django.shortcuts import render
 
-UriPart = namedtuple("UriPart", ["prefix", "file"])
+UriParts = namedtuple("UriParts", ["wands", "cups"], defaults=[[], []])
+UriPart  = namedtuple("UriPart", ["prefix", "file"])
 
-# Create your views here.
-def index(request):
-    uri_parts = [
+uri_parts = UriParts(
+    wands = [
         UriPart('1/11', 'Wands01.jpg'),
         UriPart('0/0f', 'Wands02.jpg'),
         UriPart('f/ff', 'Wands03.jpg'),
@@ -20,5 +20,25 @@ def index(request):
         UriPart('1/16', 'Wands12.jpg'),
         UriPart('0/0d', 'Wands13.jpg'),
         UriPart('c/ce', 'Wands14.jpg'),
+    ],
+    cups = [
+        UriPart('3/36', 'Cups01.jpg'),
+        UriPart('f/f8', 'Cups02.jpg'),
+        UriPart('7/7a', 'Cups03.jpg'),
+        UriPart('3/35', 'Cups04.jpg'),
+        UriPart('d/d7', 'Cups05.jpg'),
+        UriPart('1/17', 'Cups06.jpg'),
+        UriPart('a/ae', 'Cups07.jpg'),
+        UriPart('6/60', 'Cups08.jpg'),
+        UriPart('2/24', 'Cups09.jpg'),
+        UriPart('8/84', 'Cups10.jpg'),
+        UriPart('a/ad', 'Cups11.jpg'),
+        UriPart('f/fa', 'Cups12.jpg'),
+        UriPart('6/62', 'Cups13.jpg'),
+        UriPart('0/04', 'Cups14.jpg'),
     ]
+)
+
+# Create your views here.
+def index(request):
     return render(request, 'gallery/index.html', context={'uri_parts': uri_parts})
