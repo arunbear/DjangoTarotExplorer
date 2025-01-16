@@ -24,6 +24,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_row(table, "wands", uri_parts.wands)
         self.check_row(table, "cups", uri_parts.cups)
         self.check_row(table, "swords", uri_parts.swords)
+        self.check_row(table, "coins", uri_parts.coins)
 
     def check_row(self, table, suite, uri_parts):
         row = table.find("tr", {"id": suite})
