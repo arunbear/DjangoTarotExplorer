@@ -1,5 +1,6 @@
-from bs4 import BeautifulSoup
 from collections import namedtuple
+
+from bs4 import BeautifulSoup
 from django.test import TestCase
 
 import gallery.models
@@ -19,8 +20,10 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_table_contents(table)
 
     def check_table_contents(self, table):
-        self.check_row(table, "wands", gallery.models.uri_parts.wands)
-        self.check_row(table, "cups", gallery.models.uri_parts.cups)
+        uri_parts = gallery.models.uri_parts
+        self.check_row(table, "wands", uri_parts.wands)
+        self.check_row(table, "cups", uri_parts.cups)
+        self.check_row(table, "swords", uri_parts.swords)
 
     def check_row(self, table, suite, uri_parts):
         row = table.find("tr", {"id": suite})

@@ -3,7 +3,7 @@ from collections import namedtuple
 from django.db import models
 
 # Create your models here.
-UriParts = namedtuple("UriParts", ["wands", "cups"], defaults=[[], []])
+UriParts = namedtuple("UriParts", ["wands", "cups", "swords"], defaults=[[], [], []])
 UriPart  = namedtuple("UriPart", ["prefix", "file"])
 
 uri_parts = UriParts(
@@ -38,5 +38,21 @@ uri_parts = UriParts(
         UriPart('f/fa', 'Cups12.jpg'),
         UriPart('6/62', 'Cups13.jpg'),
         UriPart('0/04', 'Cups14.jpg'),
+    ],
+    swords = [
+        UriPart('1/1a', 'Swords01.jpg'),
+        UriPart('9/9e', 'Swords02.jpg'),
+        UriPart('0/02', 'Swords03.jpg'),
+        UriPart('b/bf', 'Swords04.jpg'),
+        UriPart('2/23', 'Swords05.jpg'),
+        UriPart('2/29', 'Swords06.jpg'),
+        UriPart('3/34', 'Swords07.jpg'),
+        UriPart('a/a7', 'Swords08.jpg'),
+        UriPart('2/2f', 'Swords09.jpg'),
+        UriPart('d/d4', 'Swords10.jpg'),
+        UriPart('4/4c', 'Swords11.jpg'),
+        UriPart('b/b0', 'Swords12.jpg'),
+        UriPart('d/d4', 'Swords13.jpg'),
+        UriPart('3/33', 'Swords14.jpg'),
     ]
 )
