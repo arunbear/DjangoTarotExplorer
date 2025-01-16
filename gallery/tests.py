@@ -19,13 +19,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_table_contents(table)
 
     def check_table_contents(self, table):
-        self.check_wands_row(table)
-        self.check_cups_row(table)
-
-    def check_wands_row(self, table):
         self.check_row(table, "wands", gallery.models.uri_parts.wands)
-
-    def check_cups_row(self, table):
         self.check_row(table, "cups", gallery.models.uri_parts.cups)
 
     def check_row(self, table, suite, uri_parts):
