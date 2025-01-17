@@ -4,7 +4,8 @@ from django.db import models
 
 # Create your models here.
 UriParts = namedtuple("UriParts",
-                      ["wands", "cups", "swords", "coins", "majors1"], defaults=[[], [], [], []])
+                      ["wands", "cups", "swords", "coins", "majors1", "majors2"],
+                      defaults=[[], [], [], [], []])
 UriPart  = namedtuple("UriPart", ["prefix", "file"])
 
 uri_parts = UriParts(
@@ -84,5 +85,18 @@ uri_parts = UriParts(
         UriPart('f/f5', 'RWS_Tarot_08_Strength.jpg'),
         UriPart('4/4d', 'RWS_Tarot_09_Hermit.jpg'),
         UriPart('3/3c', 'RWS_Tarot_10_Wheel_of_Fortune.jpg'),
+    ],
+    majors2= [
+        UriPart('e/e0', 'RWS_Tarot_11_Justice.jpg'),
+        UriPart('2/2b', 'RWS_Tarot_12_Hanged_Man.jpg'),
+        UriPart('d/d7', 'RWS_Tarot_13_Death.jpg'),
+        UriPart('f/f8', 'RWS_Tarot_14_Temperance.jpg'),
+        UriPart('5/55', 'RWS_Tarot_15_Devil.jpg'),
+        UriPart('5/53', 'RWS_Tarot_16_Tower.jpg'),
+        UriPart('d/db', 'RWS_Tarot_17_Star.jpg'),
+        UriPart('7/7f', 'RWS_Tarot_18_Moon.jpg'),
+        UriPart('1/17', 'RWS_Tarot_19_Sun.jpg'),
+        UriPart('d/dd', 'RWS_Tarot_20_Judgement.jpg'),
+        UriPart('f/ff', 'RWS_Tarot_21_World.jpg'),
     ]
 )
