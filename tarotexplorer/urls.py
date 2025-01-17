@@ -17,7 +17,10 @@ Including another URLconf
 # from django.contrib import admin
 from django.urls import path, include
 
+import gallery.views
+
 urlpatterns = [
     path("gallery/", include("gallery.urls")),
+    path('', gallery.views.index)
     #    path('admin/', admin.site.urls),
 ]
