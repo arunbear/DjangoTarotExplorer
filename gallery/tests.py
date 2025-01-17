@@ -1,4 +1,5 @@
 from collections import namedtuple
+from itertools import dropwhile
 
 from bs4 import BeautifulSoup
 from django.test import TestCase
@@ -11,6 +12,33 @@ class GalleryIndexViewSpecs(TestCase):
     def test_that_gallery_url_exists(self):
         response = self.client.get("/gallery/")
         self.assertIs(response.status_code, 200)
+
+    def test_that_nav_bar_exists(self):
+        response = self.client.get("/gallery/")
+        soup = BeautifulSoup(response.content, features="html.parser")
+        navbar = soup.find("div", {"class": "navbar"})
+        self.assertIsNotNone(navbar)
+
+        links = navbar.select("a")
+        self.assertEqual(links[0].text, "About")
+        self.assertEqual(links[1].text, "Minors")
+        self.assertEqual(links[1].get("href"), "/gallery/")
+
+        self.check_dropdown(navbar)
+
+    def check_dropdown(self, navbar):
+        dropdown = navbar.find("div", {"class": "dropdown"})
+        self.assertIsNotNone(dropdown)
+
+        button = dropdown.find("button")
+        self.assertRegex(button.text, "Royals")
+
+        dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
+        dropdown_links = dropdown_content.select("a")
+        self.assertEqual("By Suite", dropdown_links[0].text)
+        self.assertEqual("/gallery/royals/by/suite", dropdown_links[0].get("href"))
+        self.assertEqual("By Rank", dropdown_links[1].text)
+        self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
 
     def test_that_gallery_contains_table(self):
         response = self.client.get("/gallery/")
