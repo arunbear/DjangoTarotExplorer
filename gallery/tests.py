@@ -1,8 +1,8 @@
 from collections import namedtuple
-from itertools import dropwhile
 
 from bs4 import BeautifulSoup
 from django.test import TestCase
+from django.urls import reverse
 
 import gallery.models
 
@@ -10,11 +10,11 @@ UriPart = namedtuple("UriPart", ["prefix", "file"])
 
 class GalleryIndexViewSpecs(TestCase):
     def test_that_gallery_url_exists(self):
-        response = self.client.get("/gallery/")
+        response = self.client.get(reverse('gallery:index'))
         self.assertIs(response.status_code, 200)
 
     def test_that_nav_bar_exists(self):
-        response = self.client.get("/gallery/")
+        response = self.client.get(reverse('gallery:index'))
         soup = BeautifulSoup(response.content, features="html.parser")
         navbar = soup.find("div", {"class": "navbar"})
         self.assertIsNotNone(navbar)
@@ -41,7 +41,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
 
     def test_that_gallery_contains_table(self):
-        response = self.client.get("/gallery/")
+        response = self.client.get(reverse('gallery:index'))
         soup = BeautifulSoup(response.content, features="html.parser")
         table = soup.find("table", {"id": "gallery"})
         self.assertIsNotNone(table)
