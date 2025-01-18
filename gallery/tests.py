@@ -21,7 +21,7 @@ class GalleryIndexViewSpecs(TestCase):
 
         links = navbar.select("a")
         self.assertEqual(links[0].text, "About")
-        self.assertEqual(links[1].text, "Minors")
+        self.assertEqual(links[1].text, "All")
         self.assertEqual(links[1].get("href"), "/gallery/")
 
         self.check_dropdown(navbar)

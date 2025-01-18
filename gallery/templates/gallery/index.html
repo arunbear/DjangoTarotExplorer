@@ -84,14 +84,14 @@
 
      <div class="navbar">
       <a href="#about">About</a>
-      <a href="/gallery/">Minors</a>
+      <a href="{% url 'gallery:index' %}">All</a>
       <div class="dropdown">
         <button class="dropbtn">Royals
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-          <a href="/gallery/royals/by/suite">By Suite</a>
-          <a href="/gallery/royals/by/rank">By Rank</a>
+          <a href="{% url 'gallery:index' %}royals/by/suite">By Suite</a>
+          <a href="{% url 'gallery:index' %}royals/by/rank">By Rank</a>
         </div>
       </div>
     </div>
