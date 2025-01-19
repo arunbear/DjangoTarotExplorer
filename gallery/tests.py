@@ -48,26 +48,26 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_table_contents(table)
 
     def check_table_contents(self, table):
-        uri_parts = gallery.models.deck
-        self.check_row(table, "wands", uri_parts.wands)
-        self.check_row(table, "cups", uri_parts.cups)
-        self.check_row(table, "swords", uri_parts.swords)
-        self.check_row(table, "coins", uri_parts.coins)
-        self.check_row(table, "majors1", uri_parts.majors1)
-        self.check_row(table, "majors2", uri_parts.majors2)
+        deck = gallery.models.deck
+        self.check_row(table, "wands", deck.wands)
+        self.check_row(table, "cups", deck.cups)
+        self.check_row(table, "swords", deck.swords)
+        self.check_row(table, "coins", deck.coins)
+        self.check_row(table, "majors1", deck.majors1)
+        self.check_row(table, "majors2", deck.majors2)
 
-    def check_row(self, table, suite, uri_parts):
+    def check_row(self, table, suite, cards: list[gallery.models.Card]):
         row = table.find("tr", {"id": suite})
         self.assertIsNotNone(row, f"Table contains a {suite} row")
 
         cells = row.select("td > a")
-        self.assertEqual(len(cells), len(uri_parts))
+        self.assertEqual(len(cells), len(cards))
 
-        for part, tag in zip(uri_parts, cells):
-            url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{part.file}"
+        for card, tag in zip(cards, cells):
+            url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
             self.assertEqual(url, tag['href'])
 
             img = tag.find("img")
             self.assertIsNotNone(img, f"Link contains an image")
-            img_src = f"https://upload.wikimedia.org/wikipedia/commons/{part.prefix}/{part.file}"
+            img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.prefix}/{card.file}"
             self.assertEqual(img_src, img['src'])
