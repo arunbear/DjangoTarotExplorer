@@ -48,7 +48,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_table_contents(table)
 
     def check_table_contents(self, table):
-        uri_parts = gallery.models.uri_parts
+        uri_parts = gallery.models.deck
         self.check_row(table, "wands", uri_parts.wands)
         self.check_row(table, "cups", uri_parts.cups)
         self.check_row(table, "swords", uri_parts.swords)
