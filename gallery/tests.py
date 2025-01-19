@@ -1,4 +1,3 @@
-from collections import namedtuple
 from http import HTTPStatus
 
 from bs4 import BeautifulSoup
@@ -7,7 +6,6 @@ from django.urls import reverse
 
 import gallery.models
 
-UriPart = namedtuple("UriPart", ["prefix", "file"])
 
 class GalleryIndexViewSpecs(TestCase):
     def test_that_gallery_url_exists(self):
