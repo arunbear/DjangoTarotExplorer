@@ -98,32 +98,32 @@
 
     <table id="gallery">
         <tr id="wands">
-            {% for uri_part in deck.wands %}
+            {% for card in deck.wands %}
                 {% include "card_cell.html" %}
             {% endfor %}
         </tr>
         <tr id="cups">
-            {% for uri_part in deck.cups %}
+            {% for card in deck.cups %}
                 {% include "card_cell.html" %}
             {% endfor %}
         </tr>
         <tr id="swords">
-            {% for uri_part in deck.swords %}
+            {% for card in deck.swords %}
                 {% include "card_cell.html" %}
             {% endfor %}
         </tr>
         <tr id="coins">
-            {% for uri_part in deck.coins %}
+            {% for card in deck.coins %}
                 {% include "card_cell.html" %}
             {% endfor %}
         </tr>
         <tr id="majors1">
-            {% for uri_part in deck.majors1 %}
+            {% for card in deck.majors1 %}
                 {% include "card_cell.html" %}
             {% endfor %}
         </tr>
         <tr id="majors2">
-            {% for uri_part in deck.majors2 %}
+            {% for card in deck.majors2 %}
                 {% include "card_cell.html" %}
             {% endfor %}
         </tr>
