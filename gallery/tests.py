@@ -69,5 +69,5 @@ class GalleryIndexViewSpecs(TestCase):
 
             img = tag.find("img")
             self.assertIsNotNone(img, f"Link contains an image")
-            img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.prefix}/{card.file}"
+            img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
             self.assertEqual(img_src, img['src'])

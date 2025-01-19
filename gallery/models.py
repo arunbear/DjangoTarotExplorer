@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Card:
-    prefix: str
+    uri_key: str
     file: str
 
 @dataclass(frozen=True)
