@@ -1,4 +1,5 @@
 from collections import namedtuple
+from http import HTTPStatus
 
 from bs4 import BeautifulSoup
 from django.test import TestCase
@@ -11,7 +12,7 @@ UriPart = namedtuple("UriPart", ["prefix", "file"])
 class GalleryIndexViewSpecs(TestCase):
     def test_that_gallery_url_exists(self):
         response = self.client.get(reverse('gallery:index'))
-        self.assertIs(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_that_nav_bar_exists(self):
         response = self.client.get(reverse('gallery:index'))
