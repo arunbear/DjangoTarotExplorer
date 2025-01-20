@@ -70,3 +70,37 @@ class GalleryIndexViewSpecs(TestCase):
             self.assertIsNotNone(img, f"Link contains an image")
             img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
             self.assertEqual(img_src, img['src'])
+
+class GalleryRoyalsViewAll(TestCase):
+    def test_that_all_royals_can_can_be_viewed(self):
+        response = self.client.get("/gallery/royals/")
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+
+        soup = BeautifulSoup(response.content, features="html.parser")
+        table = soup.find("table", {"id": "gallery"})
+        self.assertIsNotNone(table)
+        self.check_table_contents(table)
+
+    def check_table_contents(self, table):
+        deck = gallery.models.deck
+        wands_and_cups = [*deck.wands[10:14], *deck.cups[13:9:-1]]
+        self.check_row(table, "wands_and_cups", wands_and_cups)
+
+        swords_and_coins = [*deck.swords[10:14], *deck.coins[13:9:-1]]
+        self.check_row(table, "swords_and_coins", swords_and_coins)
+
+    def check_row(self, table, row_id, cards: list[gallery.models.Card]):
+        row = table.find("tr", {"id": row_id})
+        self.assertIsNotNone(row, f"Table contains a {row_id} row")
+
+        cells = row.select("td > a")
+        self.assertEqual(len(cells), len(cards), f"Number of cells in {row_id} row")
+
+        for card, tag in zip(cards, cells):
+            url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
+            self.assertEqual(url, tag['href'])
+
+            img = tag.find("img")
+            self.assertIsNotNone(img, f"Link contains an image")
+            img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
+            self.assertEqual(img_src, img['src'])

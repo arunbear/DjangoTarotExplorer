@@ -6,4 +6,5 @@ app_name = 'gallery'
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("royals/", views.royals, name="royals"),
 ]
