@@ -97,36 +97,12 @@
     </div>
 
     <table id="gallery">
-        <tr id="wands">
-            {% for card in deck.wands %}
-                {% include "card_cell.html" %}
-            {% endfor %}
-        </tr>
-        <tr id="cups">
-            {% for card in deck.cups %}
-                {% include "card_cell.html" %}
-            {% endfor %}
-        </tr>
-        <tr id="swords">
-            {% for card in deck.swords %}
-                {% include "card_cell.html" %}
-            {% endfor %}
-        </tr>
-        <tr id="coins">
-            {% for card in deck.coins %}
-                {% include "card_cell.html" %}
-            {% endfor %}
-        </tr>
-        <tr id="majors1">
-            {% for card in deck.majors1 %}
-                {% include "card_cell.html" %}
-            {% endfor %}
-        </tr>
-        <tr id="majors2">
-            {% for card in deck.majors2 %}
-                {% include "card_cell.html" %}
-            {% endfor %}
-        </tr>
+        {% include "row_of_cards.html" with id="wands"   cards=deck.wands %}
+        {% include "row_of_cards.html" with id="cups"    cards=deck.cups %}
+        {% include "row_of_cards.html" with id="swords"  cards=deck.swords %}
+        {% include "row_of_cards.html" with id="coins"   cards=deck.coins %}
+        {% include "row_of_cards.html" with id="majors1" cards=deck.majors1 %}
+        {% include "row_of_cards.html" with id="majors2" cards=deck.majors2 %}
     </table>
 </body>
 </html>
