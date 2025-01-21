@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 import gallery.models
+from gallery.models import royals
 
 
 class GalleryIndexViewSpecs(TestCase):
@@ -82,12 +83,8 @@ class GalleryRoyalsViewAll(TestCase):
         self.check_table_contents(table)
 
     def check_table_contents(self, table):
-        deck = gallery.models.deck
-        wands_and_cups = [*deck.wands[10:14], *deck.cups[13:9:-1]]
-        self.check_row(table, "wands_and_cups", wands_and_cups)
-
-        swords_and_coins = [*deck.swords[10:14], *deck.coins[13:9:-1]]
-        self.check_row(table, "swords_and_coins", swords_and_coins)
+        self.check_row(table, "wands_and_cups", royals.wands_and_cups)
+        self.check_row(table, "swords_and_coins", royals.swords_and_coins)
 
     def check_row(self, table, row_id, cards: list[gallery.models.Card]):
         row = table.find("tr", {"id": row_id})

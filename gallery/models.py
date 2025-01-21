@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import NamedTuple
 
 # Create your models here.
 
@@ -15,6 +16,10 @@ class Deck:
     coins: list[Card]
     majors1: list[Card]
     majors2: list[Card]
+
+class RoyalGrouping(NamedTuple):
+    wands_and_cups: list[Card]
+    swords_and_coins: list[Card]
 
 deck = Deck(
     wands = [
@@ -107,4 +112,9 @@ deck = Deck(
         Card('d/dd', 'RWS_Tarot_20_Judgement.jpg'),
         Card('f/ff', 'RWS_Tarot_21_World.jpg'),
     ]
+)
+
+royals = RoyalGrouping(
+    wands_and_cups=   [*deck.wands[10:14],  *deck.cups[13:9:-1]],
+    swords_and_coins= [*deck.swords[10:14], *deck.coins[13:9:-1]]
 )
