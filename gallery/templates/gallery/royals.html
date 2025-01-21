@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Gallery</title>
-    <style>
-        img {
-            width: 99%;
-            height: auto;
-        }
+{% extends "gallery/main.html" %}
 
-        {% include 'navbar.css' %}
-    </style>
-</head>
-<body>
-
-<div class="navbar">
-    <a href="#about">About</a>
-    <a href="{% url 'gallery:index' %}">All</a>
-    <div class="dropdown">
-        <button class="dropbtn">Royals
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="{% url 'gallery:index' %}royals/by/suite">By Suite</a>
-            <a href="{% url 'gallery:index' %}royals/by/rank">By Rank</a>
-        </div>
-    </div>
-</div>
-
+{% block content %}
 <table id="gallery">
     {% include "row_of_cards.html" with id="wands_and_cups" cards=wands_and_cups %}
     {% include "row_of_cards.html" with id="swords_and_coins" cards=swords_and_coins %}
 </table>
-
-</body>
-</html>
+{% endblock %}
