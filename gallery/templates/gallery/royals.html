@@ -1,13 +1,26 @@
 {% extends "gallery/main.html" %}
 
-{% block content %}
-<div style="resize:both">
+{% block local_style %}
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 1px;
+        align-items: stretch;
+        justify-items: center;
+    }
 
-<table id="gallery">
-    {% include "row_of_cards.html" with id="wands" cards=wands %}
-    {% include "row_of_cards.html" with id="cups" cards=cups %}
-    {% include "row_of_cards.html" with id="swords" cards=swords %}
-    {% include "row_of_cards.html" with id="coins" cards=coins %}
-</table>
+    .grid img {
+        max-width: 100%;
+    }
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+    {% for card in cards %}
+        <a href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/{{ card.uri_key }}/{{ card.file }}" alt=""/>
+        </a>
+    {% endfor %}
 </div>
+
 {% endblock %}

@@ -9,12 +9,6 @@ def index(request):
     return render(request, 'gallery/index.html', context={'deck': deck})
 
 def royals(request):
-    context = {
-      'wands' : gallery.models.royals.wands,
-      'cups'  : gallery.models.royals.cups,
-      'swords': gallery.models.royals.swords,
-      'coins' :gallery.models.royals.coins,
-    }
-    return render(request, 'gallery/royals.html', context=context)
+    return render(request, 'gallery/royals.html', { 'cards': gallery.models.royals.by_suite })
 
 

@@ -72,35 +72,25 @@ class GalleryIndexViewSpecs(TestCase):
             img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
             self.assertEqual(img_src, img['src'])
 
-class GalleryRoyalsViewAll(TestCase):
+class GalleryRoyalsViewAllBySuite(TestCase):
     def test_that_all_royals_can_can_be_viewed(self):
         response = self.client.get("/gallery/royals/")
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
         soup = BeautifulSoup(response.content, features="html.parser")
-        table = soup.find("table", {"id": "gallery"})
-        self.assertIsNotNone(table)
-        self.check_table_contents(table)
+        grid = soup.find("div", {"class": "grid"})
+        self.assertIsNotNone(grid)
+        self.check_grid_contents(grid)
 
-    def check_table_contents(self, table):
-        self.check_row(table, "wands", royals.wands, 4)
-        self.check_row(table, "cups", royals.cups, 4)
-        self.check_row(table, "swords", royals.swords, 4)
-        self.check_row(table, "coins", royals.coins, 4)
+    def check_grid_contents(self, grid):
+        links = grid.select("a")
+        self.assertEqual(len(links), 4 * 4)
+        for card, link in zip(royals.by_suite, links):
+            with self.subTest():
+                url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
+                self.assertEqual(url, link['href'])
 
-    def check_row(self, table, row_id, cards: list[gallery.models.Card], num_of_cards: int):
-        row = table.find("tr", {"id": row_id})
-        self.assertIsNotNone(row, f"Table contains a {row_id} row")
-
-        cells = row.select("td > a")
-        self.assertEqual(len(cards), num_of_cards, "Number of cards in model")
-        self.assertEqual(len(cells), len(cards), f"Number of cells in {row_id} row")
-
-        for card, tag in zip(cards, cells):
-            url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
-            self.assertEqual(url, tag['href'])
-
-            img = tag.find("img")
-            self.assertIsNotNone(img, f"Link contains an image")
-            img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
-            self.assertEqual(img_src, img['src'])
+                img = link.find("img")
+                self.assertIsNotNone(img, f"Link contains an image")
+                img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
+                self.assertEqual(img_src, img['src'])
