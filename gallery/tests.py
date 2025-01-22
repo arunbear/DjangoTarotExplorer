@@ -37,8 +37,8 @@ class GalleryIndexViewSpecs(TestCase):
         dropdown_links = dropdown_content.select("a")
         self.assertEqual("All", dropdown_links[0].text)
         self.assertEqual("/gallery/royals/", dropdown_links[0].get("href"))
-        self.assertEqual("Pages", dropdown_links[1].text)
-        self.assertEqual("/gallery/royals/pages/", dropdown_links[1].get("href"))
+        self.assertEqual("By Rank", dropdown_links[1].text)
+        self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
 
     def test_that_gallery_contains_table(self):
         response = self.client.get(reverse('gallery:index'))
