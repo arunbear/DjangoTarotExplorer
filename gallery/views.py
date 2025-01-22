@@ -11,4 +11,5 @@ def index(request):
 def royals(request):
     return render(request, 'gallery/royals.html', { 'cards': gallery.models.royals.by_suite })
 
-
+def royals_by_rank(request):
+    return render(request, 'gallery/royals.html', { 'cards': gallery.models.royals.by_rank })

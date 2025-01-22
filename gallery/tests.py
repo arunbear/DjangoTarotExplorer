@@ -5,8 +5,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 import gallery.models
-from gallery.models import royals
+from gallery.models import deck, royals
 
+royals_by_rank = [
+    deck.wands[10], deck.cups[10], deck.swords[10], deck.coins[10],
+    deck.wands[11], deck.cups[11], deck.swords[11], deck.coins[11],
+    deck.wands[12], deck.cups[12], deck.swords[12], deck.coins[12],
+    deck.wands[13], deck.cups[13], deck.swords[13], deck.coins[13],
+]
 
 class GalleryIndexViewSpecs(TestCase):
     def test_that_gallery_url_exists(self):
@@ -89,6 +95,29 @@ class GalleryRoyalsViewAllBySuite(TestCase):
             with self.subTest():
                 url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
                 self.assertEqual(url, link['href'])
+
+                img = link.find("img")
+                self.assertIsNotNone(img, f"Link contains an image")
+                img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
+                self.assertEqual(img_src, img['src'])
+
+class GalleryRoyalsViewAllByRank(TestCase):
+    def test_that_all_royals_can_can_be_viewed(self):
+        response = self.client.get("/gallery/royals/by/rank/")
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+
+        soup = BeautifulSoup(response.content, features="html.parser")
+        grid = soup.find("div", {"class": "grid"})
+        self.assertIsNotNone(grid)
+        self.check_grid_contents(grid)
+
+    def check_grid_contents(self, grid):
+        links = grid.select("a")
+        self.assertEqual(len(links), 4 * 4)
+        for card, link in zip(royals_by_rank, links):
+            with self.subTest():
+                url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
+                self.assertURLEqual(url, link['href'])
 
                 img = link.find("img")
                 self.assertIsNotNone(img, f"Link contains an image")

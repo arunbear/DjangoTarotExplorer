@@ -23,6 +23,7 @@ class RoyalGrouping(NamedTuple):
     swords: list[Card]
     coins: list[Card]
     by_suite: list[Card]
+    by_rank: list[Card]
 
 deck = Deck(
     wands = [
@@ -117,10 +118,17 @@ deck = Deck(
     ]
 )
 
+def __royals_by_rank():
+    cards = []
+    for i in range(10, 14):
+        cards.extend([deck.wands[i], deck.cups[i], deck.swords[i], deck.coins[i]])
+    return cards
+
 royals = RoyalGrouping(
     wands  = [*deck.wands[10:14]],
     cups   = [*deck.cups[10:14]],
     swords = [*deck.swords[10:14]],
     coins  = [*deck.coins[10:14]],
-    by_suite = [*deck.wands[10:14], *deck.cups[10:14], *deck.swords[10:14], *deck.coins[10:14]],
+    by_rank= __royals_by_rank(),
+    by_suite=[*deck.wands[10:14], *deck.cups[10:14], *deck.swords[10:14], *deck.coins[10:14]],
 )
