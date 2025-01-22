@@ -10,8 +10,10 @@ def index(request):
 
 def royals(request):
     context = {
-      'wands_and_cups'  : gallery.models.royals.wands_and_cups,
-      'swords_and_coins': gallery.models.royals.swords_and_coins,
+      'wands' : gallery.models.royals.wands,
+      'cups'  : gallery.models.royals.cups,
+      'swords': gallery.models.royals.swords,
+      'coins' :gallery.models.royals.coins,
     }
     return render(request, 'gallery/royals.html', context=context)
 

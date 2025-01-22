@@ -83,14 +83,17 @@ class GalleryRoyalsViewAll(TestCase):
         self.check_table_contents(table)
 
     def check_table_contents(self, table):
-        self.check_row(table, "wands_and_cups", royals.wands_and_cups)
-        self.check_row(table, "swords_and_coins", royals.swords_and_coins)
+        self.check_row(table, "wands", royals.wands, 4)
+        self.check_row(table, "cups", royals.cups, 4)
+        self.check_row(table, "swords", royals.swords, 4)
+        self.check_row(table, "coins", royals.coins, 4)
 
-    def check_row(self, table, row_id, cards: list[gallery.models.Card]):
+    def check_row(self, table, row_id, cards: list[gallery.models.Card], num_of_cards: int):
         row = table.find("tr", {"id": row_id})
         self.assertIsNotNone(row, f"Table contains a {row_id} row")
 
         cells = row.select("td > a")
+        self.assertEqual(len(cards), num_of_cards, "Number of cards in model")
         self.assertEqual(len(cells), len(cards), f"Number of cells in {row_id} row")
 
         for card, tag in zip(cards, cells):

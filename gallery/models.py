@@ -18,8 +18,10 @@ class Deck:
     majors2: list[Card]
 
 class RoyalGrouping(NamedTuple):
-    wands_and_cups: list[Card]
-    swords_and_coins: list[Card]
+    wands: list[Card]
+    cups: list[Card]
+    swords: list[Card]
+    coins: list[Card]
 
 deck = Deck(
     wands = [
@@ -115,6 +117,8 @@ deck = Deck(
 )
 
 royals = RoyalGrouping(
-    wands_and_cups=   [*deck.wands[10:14],  *deck.cups[13:9:-1]],
-    swords_and_coins= [*deck.swords[10:14], *deck.coins[13:9:-1]]
+    wands  = [*deck.wands[10:14]],
+    cups   = [*deck.cups[10:14]],
+    swords = [*deck.swords[10:14]],
+    coins  = [*deck.coins[10:14]]
 )

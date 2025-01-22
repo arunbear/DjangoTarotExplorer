@@ -1,8 +1,13 @@
 {% extends "gallery/main.html" %}
 
 {% block content %}
+<div style="resize:both">
+
 <table id="gallery">
-    {% include "row_of_cards.html" with id="wands_and_cups" cards=wands_and_cups %}
-    {% include "row_of_cards.html" with id="swords_and_coins" cards=swords_and_coins %}
+    {% include "row_of_cards.html" with id="wands" cards=wands %}
+    {% include "row_of_cards.html" with id="cups" cards=cups %}
+    {% include "row_of_cards.html" with id="swords" cards=swords %}
+    {% include "row_of_cards.html" with id="coins" cards=coins %}
 </table>
+</div>
 {% endblock %}
