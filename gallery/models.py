@@ -20,6 +20,13 @@ class Deck:
     def all_cards(self) -> list[Card]:
         return [ *self.wands, *self.cups, *self.swords, *self.coins, *self.majors1, *self.majors2 ]
 
+    def pips(self) -> list[Card]:
+        pips = []
+        for i in range(0, 10):
+            pips.extend([deck.wands[i], deck.cups[i], deck.swords[i], deck.coins[i]])
+
+        return pips
+
 class RoyalGrouping(NamedTuple):
     wands: list[Card]
     cups: list[Card]

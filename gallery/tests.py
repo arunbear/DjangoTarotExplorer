@@ -122,3 +122,25 @@ class CanViewAllRoyalsByRank(GridViewSpec.CanViewAll):
 
     def expected_cards(self):
         return royals_by_rank
+
+class CanViewAllPips(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 10 * 4
+
+    def page_uri(self):
+        return "/gallery/pips/"
+
+    def expected_cards(self):
+        pips = [
+            deck.wands[0], deck.cups[0], deck.swords[0], deck.coins[0],
+            deck.wands[1], deck.cups[1], deck.swords[1], deck.coins[1],
+            deck.wands[2], deck.cups[2], deck.swords[2], deck.coins[2],
+            deck.wands[3], deck.cups[3], deck.swords[3], deck.coins[3],
+            deck.wands[4], deck.cups[4], deck.swords[4], deck.coins[4],
+            deck.wands[5], deck.cups[5], deck.swords[5], deck.coins[5],
+            deck.wands[6], deck.cups[6], deck.swords[6], deck.coins[6],
+            deck.wands[7], deck.cups[7], deck.swords[7], deck.coins[7],
+            deck.wands[8], deck.cups[8], deck.swords[8], deck.coins[8],
+            deck.wands[9], deck.cups[9], deck.swords[9], deck.coins[9],
+        ]
+        return pips
