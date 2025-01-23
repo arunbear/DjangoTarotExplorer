@@ -22,9 +22,6 @@ royals_by_rank = [
 ]
 
 class GalleryIndexViewSpecs(TestCase):
-    def test_that_gallery_url_exists(self):
-        response = self.client.get(reverse('gallery:index'))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_that_nav_bar_exists(self):
         response = self.client.get(reverse('gallery:index'))
@@ -53,35 +50,10 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual("By Rank", dropdown_links[1].text)
         self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
 
-    def test_that_main_gallery_contains_all_cards(self):
-        response = self.client.get(reverse('gallery:index'))
-        soup = BeautifulSoup(response.content, features="html.parser")
-        grid = soup.find("div", {"class": "grid"})
-        self.assertIsNotNone(grid)
-        self.check_grid_contents(grid)
-
-    def check_grid_contents(self, grid):
-        links = grid.select("a")
-        self.assertEqual(len(links), 78)
-        self.assertEqual(len(self.expected_cards()), 78)
-
-        for card, link in zip(self.expected_cards(), links):
-            with self.subTest():
-                url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
-                self.assertEqual(url, link['href'])
-
-                img = link.find("img")
-                self.assertIsNotNone(img, f"Link contains an image")
-                img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
-                self.assertEqual(img_src, img['src'])
-
-    def expected_cards(self):
-        return deck.all_cards()
-
-class ViewRoyalsSpec:
+class GridViewSpec:
     # Nest to prevent unittest from instantiating an ABC
     class CanViewAll(TestCase, metaclass=ABCMeta):
-        def test_that_all_royals_can_can_be_viewed(self):
+        def test_that_all_cards_can_can_be_viewed(self):
             response = self.client.get(self.page_uri())
             self.assertEqual(HTTPStatus.OK, response.status_code)
 
@@ -92,7 +64,9 @@ class ViewRoyalsSpec:
 
         def check_grid_contents(self, grid):
             links = grid.select("a")
-            self.assertEqual(len(links), 4 * 4)
+            self.assertEqual(len(self.expected_cards()), self.expected_number_of_cards())
+            self.assertEqual(len(links), self.expected_number_of_cards())
+
             for card, link in zip(self.expected_cards(), links):
                 with self.subTest():
                     url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
@@ -111,7 +85,25 @@ class ViewRoyalsSpec:
         def expected_cards(self):
             pass
 
-class CanViewAllRoyalsBySuite(ViewRoyalsSpec.CanViewAll):
+        @abstractmethod
+        def expected_number_of_cards(self):
+            pass
+
+
+class CanViewAllDefaultGallery(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 78
+
+    def page_uri(self):
+        return reverse('gallery:index')
+
+    def expected_cards(self):
+        return deck.all_cards()
+
+class CanViewAllRoyalsBySuite(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 4 * 4
+
     def page_uri(self):
         return "/gallery/royals/by/suite/"
 
@@ -119,7 +111,10 @@ class CanViewAllRoyalsBySuite(ViewRoyalsSpec.CanViewAll):
         return royals_by_suite
 
 
-class CanViewAllRoyalsByRank(ViewRoyalsSpec.CanViewAll):
+class CanViewAllRoyalsByRank(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 4 * 4
+
     def page_uri(self):
         return "/gallery/royals/by/rank/"
 
