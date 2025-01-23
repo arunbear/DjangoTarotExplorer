@@ -6,7 +6,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 import gallery.models
-from gallery.models import deck, royals
+from gallery.models import deck
+
+royals_by_suite = [
+    deck.wands[10],  deck.wands[11],  deck.wands[12],  deck.wands[13],
+    deck.cups[10],   deck.cups[11],   deck.cups[12],   deck.cups[13],
+    deck.swords[10], deck.swords[11], deck.swords[12], deck.swords[13],
+    deck.coins[10],  deck.coins[11],  deck.coins[12],  deck.coins[13],
+]
 
 royals_by_rank = [
     deck.wands[10], deck.cups[10], deck.swords[10], deck.coins[10],
@@ -117,7 +124,7 @@ class CanViewAllRoyalsBySuite(ViewRoyalsSpec.CanViewAll):
         return "/gallery/royals/by/suite/"
 
     def expected_cards(self):
-        return royals.by_suite
+        return royals_by_suite
 
 
 class CanViewAllRoyalsByRank(ViewRoyalsSpec.CanViewAll):
