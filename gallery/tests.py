@@ -41,8 +41,8 @@ class GalleryIndexViewSpecs(TestCase):
 
         dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
         dropdown_links = dropdown_content.select("a")
-        self.assertEqual("All", dropdown_links[0].text)
-        self.assertEqual("/gallery/royals/", dropdown_links[0].get("href"))
+        self.assertEqual("By Suite", dropdown_links[0].text)
+        self.assertEqual("/gallery/royals/by/suite", dropdown_links[0].get("href"))
         self.assertEqual("By Rank", dropdown_links[1].text)
         self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
 
