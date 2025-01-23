@@ -112,7 +112,7 @@ class ViewRoyalsSpec:
         def expected_cards(self):
             pass
 
-class GalleryRoyalsViewAllBySuite(ViewRoyalsSpec.CanViewAll):
+class CanViewAllRoyalsBySuite(ViewRoyalsSpec.CanViewAll):
     def page_uri(self):
         return "/gallery/royals/by/suite/"
 
@@ -120,7 +120,7 @@ class GalleryRoyalsViewAllBySuite(ViewRoyalsSpec.CanViewAll):
         return royals.by_suite
 
 
-class GalleryRoyalsViewAllByRank(ViewRoyalsSpec.CanViewAll):
+class CanViewAllRoyalsByRank(ViewRoyalsSpec.CanViewAll):
     def page_uri(self):
         return "/gallery/royals/by/rank/"
 
