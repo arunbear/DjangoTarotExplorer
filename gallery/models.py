@@ -17,6 +17,9 @@ class Deck:
     majors1: list[Card]
     majors2: list[Card]
 
+    def all_cards(self) -> list[Card]:
+        return [ *self.wands, *self.cups, *self.swords, *self.coins, *self.majors1, *self.majors2 ]
+
 class RoyalGrouping(NamedTuple):
     wands: list[Card]
     cups: list[Card]
