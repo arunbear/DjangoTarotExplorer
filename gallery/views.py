@@ -8,6 +8,9 @@ from gallery.models import deck
 def index(request):
     return render(request, 'gallery/index.html', context={'cards': deck.all_cards()})
 
+def pips(request):
+    return render(request, 'gallery/royals.html', context={'cards': deck.pips()})
+
 def royals(request):
     return render(request, 'gallery/royals.html', { 'cards': gallery.models.royals.by_suite })
 

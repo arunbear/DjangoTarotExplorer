@@ -33,6 +33,8 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual(links[0].text, "About")
         self.assertEqual(links[1].text, "All")
         self.assertEqual(links[1].get("href"), "/gallery/")
+        self.assertEqual(links[2].text, "Pips")
+        self.assertEqual(links[2].get("href"), "/gallery/pips/")
 
         self.check_dropdown(navbar)
 
