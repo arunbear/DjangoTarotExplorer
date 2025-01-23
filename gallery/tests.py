@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 from http import HTTPStatus
 
 from bs4 import BeautifulSoup
@@ -78,48 +79,50 @@ class GalleryIndexViewSpecs(TestCase):
             img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
             self.assertEqual(img_src, img['src'])
 
-class GalleryRoyalsViewAllBySuite(TestCase):
-    def test_that_all_royals_can_can_be_viewed(self):
-        response = self.client.get("/gallery/royals/by/suite/")
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+class ViewRoyalsSpec:
+    # Nest to prevent unittest from instantiating an ABC
+    class CanViewAll(TestCase, metaclass=ABCMeta):
+        def test_that_all_royals_can_can_be_viewed(self):
+            response = self.client.get(self.page_uri())
+            self.assertEqual(HTTPStatus.OK, response.status_code)
 
-        soup = BeautifulSoup(response.content, features="html.parser")
-        grid = soup.find("div", {"class": "grid"})
-        self.assertIsNotNone(grid)
-        self.check_grid_contents(grid)
+            soup = BeautifulSoup(response.content, features="html.parser")
+            grid = soup.find("div", {"class": "grid"})
+            self.assertIsNotNone(grid)
+            self.check_grid_contents(grid)
 
-    def check_grid_contents(self, grid):
-        links = grid.select("a")
-        self.assertEqual(len(links), 4 * 4)
-        for card, link in zip(royals.by_suite, links):
-            with self.subTest():
-                url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
-                self.assertEqual(url, link['href'])
+        def check_grid_contents(self, grid):
+            links = grid.select("a")
+            self.assertEqual(len(links), 4 * 4)
+            for card, link in zip(self.expected_cards(), links):
+                with self.subTest():
+                    url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
+                    self.assertEqual(url, link['href'])
 
-                img = link.find("img")
-                self.assertIsNotNone(img, f"Link contains an image")
-                img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
-                self.assertEqual(img_src, img['src'])
+                    img = link.find("img")
+                    self.assertIsNotNone(img, f"Link contains an image")
+                    img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
+                    self.assertEqual(img_src, img['src'])
 
-class GalleryRoyalsViewAllByRank(TestCase):
-    def test_that_all_royals_can_can_be_viewed(self):
-        response = self.client.get("/gallery/royals/by/rank/")
-        self.assertEqual(HTTPStatus.OK, response.status_code)
+        @abstractmethod
+        def page_uri(self):
+            pass
 
-        soup = BeautifulSoup(response.content, features="html.parser")
-        grid = soup.find("div", {"class": "grid"})
-        self.assertIsNotNone(grid)
-        self.check_grid_contents(grid)
+        @abstractmethod
+        def expected_cards(self):
+            pass
 
-    def check_grid_contents(self, grid):
-        links = grid.select("a")
-        self.assertEqual(len(links), 4 * 4)
-        for card, link in zip(royals_by_rank, links):
-            with self.subTest():
-                url = f"https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{card.file}"
-                self.assertURLEqual(url, link['href'])
+class GalleryRoyalsViewAllBySuite(ViewRoyalsSpec.CanViewAll):
+    def page_uri(self):
+        return "/gallery/royals/by/suite/"
 
-                img = link.find("img")
-                self.assertIsNotNone(img, f"Link contains an image")
-                img_src = f"https://upload.wikimedia.org/wikipedia/commons/{card.uri_key}/{card.file}"
-                self.assertEqual(img_src, img['src'])
+    def expected_cards(self):
+        return royals.by_suite
+
+
+class GalleryRoyalsViewAllByRank(ViewRoyalsSpec.CanViewAll):
+    def page_uri(self):
+        return "/gallery/royals/by/rank/"
+
+    def expected_cards(self):
+        return royals_by_rank
