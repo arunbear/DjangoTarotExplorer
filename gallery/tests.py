@@ -80,7 +80,7 @@ class GalleryIndexViewSpecs(TestCase):
 
 class GalleryRoyalsViewAllBySuite(TestCase):
     def test_that_all_royals_can_can_be_viewed(self):
-        response = self.client.get("/gallery/royals/")
+        response = self.client.get("/gallery/royals/by/suite/")
         self.assertEqual(HTTPStatus.OK, response.status_code)
 
         soup = BeautifulSoup(response.content, features="html.parser")
