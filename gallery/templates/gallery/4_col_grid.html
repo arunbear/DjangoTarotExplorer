@@ -14,12 +14,64 @@
     }
 {% endblock %}
 
+{% block local_scripts %}
+<script>
+    function handleDragStart (evt) {
+        console.log('Drag started');
+        console.log("Drag source: %o", evt.target);
+        // store dragged img for use when dropping
+        evt.dataTransfer.setData('text/html', evt.target.id);
+        console.log("draggedNodeId: %s", evt.target.id);
+    }
+
+    function handleDragOver (evt) {
+        evt.dataTransfer.dropEffect = 'move';
+        evt.preventDefault();
+    }
+
+    function handleDrop (evt) {
+        console.log('Drop handler ...');
+        console.log("Drop target: %o", evt.target);
+
+        let draggedNodeId;
+        let draggedNode;
+        let dropSiteContainerId;
+        let dropSiteContainer;
+
+        draggedNodeId = evt.dataTransfer.getData('text/html');
+        console.log("draggedNodeId: %s", draggedNodeId);
+        draggedNode = document.getElementById(draggedNodeId);
+
+        if (draggedNode !== evt.target) {
+            console.log("Can do drop ...");
+            // replace drag site image with the one at the drop site
+            dropSiteContainerId = evt.target.parentNode.parentNode.getAttribute('id');
+            console.log("dopSiteContainerId: %s", dropSiteContainerId);
+            draggedNode.parentNode.parentNode.appendChild(evt.target.parentNode);
+
+            // replace drop site image with the one from the drag site
+            dropSiteContainer = document.getElementById(dropSiteContainerId);
+            dropSiteContainer.appendChild(draggedNode.parentNode);
+        } else {
+            console.log("Can not do drop onto itself");
+        }
+    }
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="grid">
     {% for card in cards %}
-        <a href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/{{ card.uri_key }}/{{ card.file }}" alt=""/>
-        </a>
+        <div id="drag-container-{{ forloop.counter }}" class="card-container" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
+            <a class="card"
+               id="link-to-card-{{ forloop.counter }}"
+               href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/{{ card.uri_key }}/{{ card.file }}"
+                     ondragstart="handleDragStart(event)"
+                     id="image-{{ forloop.counter }}"
+                     alt="{{ card.file }}"/>
+            </a>
+        </div>
     {% endfor %}
 </div>
 
