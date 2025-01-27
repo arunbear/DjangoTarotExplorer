@@ -33,8 +33,6 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual(links[0].text, "About")
         self.assertEqual(links[1].text, "All")
         self.assertEqual(links[1].get("href"), "/gallery/")
-        self.assertEqual(links[2].text, "Pips")
-        self.assertEqual(links[2].get("href"), "/gallery/pips/")
 
         self.check_dropdown_for_royals(navbar)
         self.check_dropdown_for_pips(navbar)
@@ -142,7 +140,7 @@ class CanViewAllPips(GridViewSpec.CanViewAll):
         return 10 * 4
 
     def page_uri(self):
-        return "/gallery/pips/"
+        return "/gallery/pips/by/number"
 
     def expected_cards(self):
         pips = [
