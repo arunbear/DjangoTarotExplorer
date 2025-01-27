@@ -36,10 +36,10 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual(links[2].text, "Pips")
         self.assertEqual(links[2].get("href"), "/gallery/pips/")
 
-        self.check_dropdown(navbar)
+        self.check_dropdown_for_royals(navbar)
 
-    def check_dropdown(self, navbar):
-        dropdown = navbar.find("div", {"class": "dropdown"})
+    def check_dropdown_for_royals(self, navbar):
+        dropdown = navbar.find("div", {"id": "dropdown-royals"})
         self.assertIsNotNone(dropdown)
 
         button = dropdown.find("button")
