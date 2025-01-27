@@ -25,7 +25,18 @@
           <a href="{% url 'gallery:index' %}royals/by/rank">By Rank</a>
         </div>
       </div>
-    </div>
+
+     <div class="dropdown" id="dropdown-pips">
+         <button class="dropbtn">Pips
+             <i class="fa fa-caret-down"></i>
+         </button>
+         <div class="dropdown-content">
+             <a href="{% url 'gallery:index' %}pips/by/number">By Number</a>
+         </div>
+
+     </div>
+
+     </div>
 
     {% block content %}{% endblock %}
 </body>

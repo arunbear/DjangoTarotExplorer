@@ -37,6 +37,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual(links[2].get("href"), "/gallery/pips/")
 
         self.check_dropdown_for_royals(navbar)
+        self.check_dropdown_for_pips(navbar)
 
     def check_dropdown_for_royals(self, navbar):
         dropdown = navbar.find("div", {"id": "dropdown-royals"})
@@ -51,6 +52,19 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertEqual("/gallery/royals/by/suite", dropdown_links[0].get("href"))
         self.assertEqual("By Rank", dropdown_links[1].text)
         self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
+
+    def check_dropdown_for_pips(self, navbar):
+        dropdown = navbar.find("div", {"id": "dropdown-pips"})
+        self.assertIsNotNone(dropdown)
+        button = dropdown.find("button")
+        self.assertRegex(button.text, "Pips")
+
+        dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
+        self.assertIsNotNone(dropdown_content)
+        dropdown_links = dropdown_content.select("a")
+        self.assertEqual("By Number", dropdown_links[0].text)
+        self.assertEqual("/gallery/pips/by/number", dropdown_links[0].get("href"))
+
 
 class GridViewSpec:
     # Nest to prevent unittest from instantiating an ABC
