@@ -159,3 +159,18 @@ class CanViewAllPips(GridViewSpec.CanViewAll):
             deck.wands[9], deck.cups[9], deck.swords[9], deck.coins[9],
         ]
         return pips
+
+class CanViewAllWands(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 10 + 4
+
+    def page_uri(self):
+        return "/gallery/pips/wands/"
+
+    def expected_cards(self):
+        pips = [
+            deck.wands[0], deck.wands[1], deck.wands[2], deck.wands[3], deck.wands[4],
+            deck.wands[5], deck.wands[6], deck.wands[7], deck.wands[8], deck.wands[9],
+            deck.wands[10], deck.wands[11], deck.wands[12], deck.wands[13]
+        ]
+        return pips

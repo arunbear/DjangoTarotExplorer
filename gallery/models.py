@@ -142,3 +142,6 @@ royals = RoyalGrouping(
     by_rank= __royals_by_rank(),
     by_suite=[*deck.wands[10:14], *deck.cups[10:14], *deck.swords[10:14], *deck.coins[10:14]],
 )
+
+def wands():
+    return deck.wands

@@ -16,3 +16,6 @@ def royals(request):
 
 def royals_by_rank(request):
     return render(request, 'gallery/4_col_grid.html', {'cards': gallery.models.royals.by_rank})
+
+def wands(request):
+    return render(request, 'gallery/suite.html', {'cards': gallery.models.wands})
