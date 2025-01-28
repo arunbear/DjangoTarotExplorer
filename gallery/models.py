@@ -145,3 +145,6 @@ royals = RoyalGrouping(
 
 def wands():
     return deck.wands
+
+def cups():
+    return deck.cups
