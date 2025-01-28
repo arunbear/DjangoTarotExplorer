@@ -48,9 +48,9 @@ class GalleryIndexViewSpecs(TestCase):
         dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
         dropdown_links = dropdown_content.select("a")
         self.assertEqual("By Suite", dropdown_links[0].text)
-        self.assertEqual("/gallery/royals/by/suite", dropdown_links[0].get("href"))
+        self.assertEqual("/gallery/royals/by/suite/", dropdown_links[0].get("href"))
         self.assertEqual("By Rank", dropdown_links[1].text)
-        self.assertEqual("/gallery/royals/by/rank", dropdown_links[1].get("href"))
+        self.assertEqual("/gallery/royals/by/rank/", dropdown_links[1].get("href"))
 
     def check_dropdown_for_pips(self, navbar):
         dropdown = navbar.find("div", {"id": "dropdown-pips"})
@@ -65,7 +65,7 @@ class GalleryIndexViewSpecs(TestCase):
         Link = namedtuple('Link', ['text', 'path'])
         expected_links = [
             Link("By Number", "/gallery/pips/by/number"),
-            Link("Wands", "/gallery/pips/wands"),
+            Link("Wands", "/gallery/pips/wands/"),
             Link("Cups", "/gallery/pips/cups/"),
             Link("Swords", "/gallery/pips/swords/"),
             Link("Coins", "/gallery/pips/coins/"),

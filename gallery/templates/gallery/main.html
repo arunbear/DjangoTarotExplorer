@@ -21,8 +21,8 @@
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-          <a href="{% url 'gallery:index' %}royals/by/suite">By Suite</a>
-          <a href="{% url 'gallery:index' %}royals/by/rank">By Rank</a>
+          <a href="{% url 'gallery:royals_by_suite' %}">By Suite</a>
+          <a href="{% url 'gallery:royals_by_rank' %}">By Rank</a>
         </div>
       </div>
 
@@ -31,8 +31,8 @@
              <i class="fa fa-caret-down"></i>
          </button>
          <div class="dropdown-content">
-             <a href="{% url 'gallery:index' %}pips/by/number">By Number</a>
-             <a href="{% url 'gallery:index' %}pips/wands">Wands</a>
+             <a href="{% url 'gallery:pips_by_number' %}">By Number</a>
+             <a href="{% url 'gallery:wands' %}">Wands</a>
              <a href="{% url 'gallery:cups' %}">Cups</a>
              <a href="{% url 'gallery:swords' %}">Swords</a>
              <a href="{% url 'gallery:coins' %}">Coins</a>
