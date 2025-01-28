@@ -22,3 +22,6 @@ def wands(request):
 
 def cups(request):
     return render(request, 'gallery/suite.html', {'cards': gallery.models.cups})
+
+def swords(request):
+    return render(request, 'gallery/suite.html', {'cards': gallery.models.swords})

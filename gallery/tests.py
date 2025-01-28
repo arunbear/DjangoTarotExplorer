@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from collections import namedtuple
 from http import HTTPStatus
 
 from bs4 import BeautifulSoup
@@ -59,15 +60,20 @@ class GalleryIndexViewSpecs(TestCase):
 
         dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
         self.assertIsNotNone(dropdown_content)
-        dropdown_links = dropdown_content.select("a")
-        self.assertEqual(3, len(dropdown_links))
-        self.assertEqual("By Number", dropdown_links[0].text)
-        self.assertEqual("/gallery/pips/by/number", dropdown_links[0].get("href"))
-        self.assertEqual("Wands", dropdown_links[1].text)
-        self.assertEqual("/gallery/pips/wands", dropdown_links[1].get("href"))
-        self.assertEqual("Cups", dropdown_links[2].text)
-        self.assertEqual("/gallery/pips/cups/", dropdown_links[2].get("href"))
 
+        dropdown_links = dropdown_content.select("a")
+        Link = namedtuple('Link', ['text', 'path'])
+        expected_links = [
+            Link("By Number", "/gallery/pips/by/number"),
+            Link("Wands", "/gallery/pips/wands"),
+            Link("Cups", "/gallery/pips/cups/"),
+            Link("Swords", "/gallery/pips/swords/"),
+        ]
+        self.assertEqual(len(expected_links), len(dropdown_links))
+        for expected_link, got_link in zip(expected_links, dropdown_links):
+            with self.subTest():
+                self.assertEqual(expected_link.text, got_link.text)
+                self.assertEqual(expected_link.path, got_link.get("href"))
 
 class GridViewSpec:
     # Nest to prevent unittest from instantiating an ABC
