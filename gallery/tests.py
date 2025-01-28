@@ -68,6 +68,7 @@ class GalleryIndexViewSpecs(TestCase):
             Link("Wands", "/gallery/pips/wands"),
             Link("Cups", "/gallery/pips/cups/"),
             Link("Swords", "/gallery/pips/swords/"),
+            Link("Coins", "/gallery/pips/coins/"),
         ]
         self.assertEqual(len(expected_links), len(dropdown_links))
         for expected_link, got_link in zip(expected_links, dropdown_links):
