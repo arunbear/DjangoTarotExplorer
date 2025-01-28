@@ -60,11 +60,13 @@ class GalleryIndexViewSpecs(TestCase):
         dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
         self.assertIsNotNone(dropdown_content)
         dropdown_links = dropdown_content.select("a")
-        self.assertEqual(2, len(dropdown_links))
+        self.assertEqual(3, len(dropdown_links))
         self.assertEqual("By Number", dropdown_links[0].text)
         self.assertEqual("/gallery/pips/by/number", dropdown_links[0].get("href"))
         self.assertEqual("Wands", dropdown_links[1].text)
         self.assertEqual("/gallery/pips/wands", dropdown_links[1].get("href"))
+        self.assertEqual("Cups", dropdown_links[2].text)
+        self.assertEqual("/gallery/pips/cups/", dropdown_links[2].get("href"))
 
 
 class GridViewSpec:
