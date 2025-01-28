@@ -150,4 +150,4 @@ def cups():
     return deck.cups
 
 def swords():
-    return None
+    return deck.swords
