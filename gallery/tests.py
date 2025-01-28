@@ -203,3 +203,13 @@ class CanViewAllSwords(GridViewSpec.CanViewAll):
 
     def expected_cards(self):
         return deck.swords
+
+class CanViewAllCoins(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 10 + 4
+
+    def page_uri(self):
+        return "/gallery/pips/coins/"
+
+    def expected_cards(self):
+        return deck.coins

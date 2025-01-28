@@ -151,3 +151,6 @@ def cups():
 
 def swords():
     return deck.swords
+
+def coins():
+    return deck.coins

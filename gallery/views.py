@@ -27,4 +27,4 @@ def swords(request):
     return render(request, 'gallery/suite.html', {'cards': gallery.models.swords})
 
 def coins(request):
-    return None
+    return render(request, 'gallery/suite.html', {'cards': gallery.models.coins})
