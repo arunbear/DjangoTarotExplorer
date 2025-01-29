@@ -30,13 +30,15 @@ class GalleryIndexViewSpecs(TestCase):
         navbar = soup.find("div", {"class": "navbar"})
         self.assertIsNotNone(navbar)
 
-        links = navbar.select("a")
+        links = navbar.select("a.toplink")
         self.assertEqual(links[0].text, "About")
         self.assertEqual(links[1].text, "All")
         self.assertEqual(links[1].get("href"), "/gallery/")
 
         self.check_dropdown_for_royals(navbar)
         self.check_dropdown_for_pips(navbar)
+        self.assertEqual("Trumps", links[2].text)
+        self.assertEqual("/gallery/trumps/", links[2].get("href"))
 
     def check_dropdown_for_royals(self, navbar):
         dropdown = navbar.find("div", {"id": "dropdown-royals"})

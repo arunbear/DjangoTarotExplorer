@@ -6,6 +6,7 @@ app_name = 'gallery'
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("trumps/", views.trumps, name="trumps"),
     path("pips/by/number", views.pips, name="pips_by_number"),
     path("pips/cups/", views.cups, name="cups"),
     path("pips/coins/", views.coins, name="coins"),

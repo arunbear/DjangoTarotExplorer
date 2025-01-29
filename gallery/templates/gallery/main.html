@@ -13,10 +13,10 @@
 <body>
 
      <div class="navbar">
-      <a href="#about">About</a>
-      <a href="{% url 'gallery:index' %}">All</a>
+      <a href="#about" class="toplink">About</a>
+      <a href="{% url 'gallery:index' %}" class="toplink">All</a>
 
-         <div class="dropdown" id="dropdown-royals">
+      <div class="dropdown" id="dropdown-royals">
         <button class="dropbtn">Royals
           <i class="fa fa-caret-down"></i>
         </button>
@@ -37,8 +37,8 @@
              <a href="{% url 'gallery:swords' %}">Swords</a>
              <a href="{% url 'gallery:coins' %}">Coins</a>
          </div>
-
      </div>
+         <a href="{% url 'gallery:trumps' %}" class="toplink">Trumps</a>
 
      </div>
 
