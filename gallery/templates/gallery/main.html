@@ -12,36 +12,36 @@
 </head>
 <body>
 
-     <div class="navbar">
-      <a href="#about" class="toplink">About</a>
-      <a href="{% url 'gallery:index' %}" class="toplink">All</a>
+<div class="navbar">
+    <a href="#about" class="toplink">About</a>
+    <a href="{% url 'gallery:index' %}" class="toplink">All</a>
 
-      <div class="dropdown" id="dropdown-royals">
+    <div class="dropdown" id="dropdown-royals">
         <button class="dropbtn">Royals
-          <i class="fa fa-caret-down"></i>
+            <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-          <a href="{% url 'gallery:royals_by_suite' %}">By Suite</a>
-          <a href="{% url 'gallery:royals_by_rank' %}">By Rank</a>
+            <a href="{% url 'gallery:royals_by_suite' %}">By Suite</a>
+            <a href="{% url 'gallery:royals_by_rank' %}">By Rank</a>
         </div>
-      </div>
+    </div>
 
-     <div class="dropdown" id="dropdown-pips">
-         <button class="dropbtn">Pips
-             <i class="fa fa-caret-down"></i>
-         </button>
-         <div class="dropdown-content">
-             <a href="{% url 'gallery:pips_by_number' %}">By Number</a>
-             <a href="{% url 'gallery:wands' %}">Wands</a>
-             <a href="{% url 'gallery:cups' %}">Cups</a>
-             <a href="{% url 'gallery:swords' %}">Swords</a>
-             <a href="{% url 'gallery:coins' %}">Coins</a>
-         </div>
-     </div>
-         <a href="{% url 'gallery:trumps' %}" class="toplink">Trumps</a>
+    <div class="dropdown" id="dropdown-pips">
+        <button class="dropbtn">Pips
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'gallery:pips_by_number' %}">By Number</a>
+            <a href="{% url 'gallery:wands' %}">Wands</a>
+            <a href="{% url 'gallery:cups' %}">Cups</a>
+            <a href="{% url 'gallery:swords' %}">Swords</a>
+            <a href="{% url 'gallery:coins' %}">Coins</a>
+        </div>
+    </div>
+    <a href="{% url 'gallery:trumps' %}" class="toplink">Trumps</a>
 
-     </div>
+</div>
 
-    {% block content %}{% endblock %}
+{% block content %}{% endblock %}
 </body>
 </html>
