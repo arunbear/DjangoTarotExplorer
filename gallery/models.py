@@ -14,12 +14,10 @@ class Deck:
     cups: list[Card]
     swords: list[Card]
     coins: list[Card]
-    majors1: list[Card]
-    majors2: list[Card]
     trumps: list[Card]
 
     def all_cards(self) -> list[Card]:
-        return [ *self.wands, *self.cups, *self.swords, *self.coins, *self.majors1, *self.majors2 ]
+        return [ *self.wands, *self.cups, *self.swords, *self.coins, *self.trumps ]
 
     def pips(self) -> list[Card]:
         pips = []
@@ -100,32 +98,6 @@ deck = Deck(
         Card('d/d5', 'Pents12.jpg'),
         Card('8/88', 'Pents13.jpg'),
         Card('1/1c', 'Pents14.jpg'),
-    ],
-    majors1= [
-        Card('9/90', 'RWS_Tarot_00_Fool.jpg'),
-        Card('d/de', 'RWS_Tarot_01_Magician.jpg'),
-        Card('8/88', 'RWS_Tarot_02_High_Priestess.jpg'),
-        Card('d/d2', 'RWS_Tarot_03_Empress.jpg'),
-        Card('c/c3', 'RWS_Tarot_04_Emperor.jpg'),
-        Card('8/8d', 'RWS_Tarot_05_Hierophant.jpg'),
-        Card('d/db', 'RWS_Tarot_06_Lovers.jpg'),
-        Card('9/9b', 'RWS_Tarot_07_Chariot.jpg'),
-        Card('f/f5', 'RWS_Tarot_08_Strength.jpg'),
-        Card('4/4d', 'RWS_Tarot_09_Hermit.jpg'),
-        Card('3/3c', 'RWS_Tarot_10_Wheel_of_Fortune.jpg'),
-    ],
-    majors2= [
-        Card('e/e0', 'RWS_Tarot_11_Justice.jpg'),
-        Card('2/2b', 'RWS_Tarot_12_Hanged_Man.jpg'),
-        Card('d/d7', 'RWS_Tarot_13_Death.jpg'),
-        Card('f/f8', 'RWS_Tarot_14_Temperance.jpg'),
-        Card('5/55', 'RWS_Tarot_15_Devil.jpg'),
-        Card('5/53', 'RWS_Tarot_16_Tower.jpg'),
-        Card('d/db', 'RWS_Tarot_17_Star.jpg'),
-        Card('7/7f', 'RWS_Tarot_18_Moon.jpg'),
-        Card('1/17', 'RWS_Tarot_19_Sun.jpg'),
-        Card('d/dd', 'RWS_Tarot_20_Judgement.jpg'),
-        Card('f/ff', 'RWS_Tarot_21_World.jpg'),
     ],
     trumps= [
         Card('9/90', 'RWS_Tarot_00_Fool.jpg'),
