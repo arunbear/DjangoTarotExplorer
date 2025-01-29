@@ -29,6 +29,5 @@ def swords(request):
 def coins(request):
     return render(request, 'gallery/suite.html', {'cards': gallery.models.coins})
 
-
 def trumps(request):
-    return None
+    return render(request, 'gallery/trumps.html', {'cards': gallery.models.trumps})

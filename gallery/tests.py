@@ -215,3 +215,13 @@ class CanViewAllCoins(GridViewSpec.CanViewAll):
 
     def expected_cards(self):
         return deck.coins
+
+class CanViewAllTrumps(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 22
+
+    def page_uri(self):
+        return "/gallery/trumps/"
+
+    def expected_cards(self):
+        return deck.trumps
