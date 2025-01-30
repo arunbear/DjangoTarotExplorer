@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 from collections import namedtuple
 from http import HTTPStatus
 
+import bs4
 from bs4 import BeautifulSoup
 from django.test import TestCase
 from django.urls import reverse
@@ -31,7 +32,9 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertIsNotNone(navbar)
 
         links = navbar.select("a.toplink")
+        self.check_about_link(links[0])
         self.assertEqual(links[0].text, "About")
+        self.assertEqual(links[0].get("href"), "/gallery/about/")
         self.assertEqual(links[1].text, "All")
         self.assertEqual(links[1].get("href"), "/gallery/")
 
@@ -39,6 +42,16 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_dropdown_for_pips(navbar)
         self.assertEqual("Trumps", links[2].text)
         self.assertEqual("/gallery/trumps/", links[2].get("href"))
+
+    def check_about_link(self, link: bs4.element.Tag):
+        self.assertEqual(type(link), bs4.element.Tag)
+        self.assertEqual(link.text, "About")
+
+        expected_href = "/gallery/about/"
+        self.assertEqual(link.get("href"), expected_href)
+
+        response = self.client.get(expected_href)
+        self.assertEqual(HTTPStatus.OK, response.status_code)
 
     def check_dropdown_for_royals(self, navbar):
         dropdown = navbar.find("div", {"id": "dropdown-royals"})

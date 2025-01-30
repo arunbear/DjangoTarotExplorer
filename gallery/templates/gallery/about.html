@@ -1,0 +1,54 @@
+{% extends 'gallery/main.html' %}
+
+{% block local_style %}
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    dt {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    dd, li {
+        margin: 0;
+        padding: 0 0 0.5em 0;
+    }
+{% endblock %}
+
+{% block content %}
+
+    <h1>About</h1>
+    <p class="about">
+        The images of the Waite-Smith Tarot include a great deal of visual detail. This website collects the images
+        together
+        into various galleries so that the images can be compared and contrasted with one another.
+    </p>
+    <p>
+        This should be of particular interest to students of the Tarot seeking to develop intuition based primarily on
+        the contents
+        of the images themselves, rather than on textbook meanings.
+    </p>
+
+    <h2>Galleries</h2>
+    <dl>
+        <dt>All</dt>
+        <dd>View <a href="{% url 'gallery:index' %}"></a> all cards with the Minor Arcana shown first.</dd>
+
+        <dt>Royals</dt>
+        <dd>View the court cards, either grouped by suite, or by rank.</dd>
+
+        <dt>Pips</dt>
+        <dd>View the minor arcana cards, either grouped by suite, or by number.</dd>
+
+        <dt>Trumps</dt>
+        <dd>View the major arcana cards.</dd>
+
+    </dl>
+
+    <h2>Other Tarot Resources</h2>
+    <ul>
+        <li><a href="https://waitesmith.org/">Waite-Smith tarot card museum</a> and research library</li>
+        <li><a href="https://www.advancedtarotsecrets.com/">Advanced Tarot Secrets</a></li>
+    </ul>
+
+{% endblock %}

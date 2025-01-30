@@ -31,3 +31,6 @@ def coins(request):
 
 def trumps(request):
     return render(request, 'gallery/trumps.html', {'cards': gallery.models.trumps})
+
+def about(request):
+    return render(request, 'gallery/about.html')
