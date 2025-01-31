@@ -21,6 +21,5 @@ import gallery.views
 
 urlpatterns = [
     path("gallery/", include("gallery.urls")),
-    path('', gallery.views.index)
-    #    path('admin/', admin.site.urls),
+    path('', gallery.views.about)
 ]
