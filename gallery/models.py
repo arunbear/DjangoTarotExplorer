@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from typing import NamedTuple
 
@@ -157,3 +158,6 @@ def coins():
 
 def trumps():
     return deck.trumps
+
+def all_cards_json():
+    return json.dumps([c.img_src() for c in deck.all_cards()])

@@ -1,6 +1,41 @@
 {% extends "gallery/main.html" %}
 
 {% block local_scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        const images = {{ images_json|safe }};
+        images.sort(() => Math.random() - 0.5);
+        const indexForCard = [0, 1];
+
+        function refreshCards() {
+            $('#image-1').prop('src', images[indexForCard[0]]);
+            $('#image-2').prop('src', images[indexForCard[1]]);
+        }
+
+        $(document).ready(function() {
+            refreshCards();
+        });
+    </script>
+{% endblock %}
+
+{% block local_style %}
+    .card-holder {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1px;
+        align-items: stretch;
+        justify-items: center;
+    }
+
+    .card-holder img {
+        max-width: 100%;
+    }
+
+    .button-holder {
+        text-align: center;
+        margin-top: 1rem;
+    }
 {% endblock %}
 
 {% block content %}

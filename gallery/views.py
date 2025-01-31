@@ -36,4 +36,4 @@ def about(request):
     return render(request, 'gallery/about.html')
 
 def deal(request):
-    return render(request, 'gallery/deal.html')
+    return render(request, 'gallery/deal.html', context={'images_json': gallery.models.all_cards_json})
