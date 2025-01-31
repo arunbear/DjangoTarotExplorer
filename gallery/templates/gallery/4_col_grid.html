@@ -66,7 +66,7 @@
             <a class="card"
                id="link-to-card-{{ forloop.counter }}"
                href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/{{ card.uri_key }}/{{ card.file }}"
+                <img src="{{ card.img_src }}"
                      ondragstart="handleDragStart(event)"
                      id="image-{{ forloop.counter }}"
                      alt="{{ card.file }}"/>

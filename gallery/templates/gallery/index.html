@@ -19,7 +19,7 @@
     <div class="grid">
         {% for card in cards %}
             <a href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/{{ card.uri_key }}/{{ card.file }}" alt=""/>
+                <img src="{{ card.img_src }}" alt="{{ card.file }}"/>
             </a>
         {% endfor %}
     </div>

@@ -8,6 +8,9 @@ class Card:
     uri_key: str
     file: str
 
+    def img_src(self) -> str:
+        return f"https://upload.wikimedia.org/wikipedia/commons/{self.uri_key}/{self.file}"
+
 @dataclass(frozen=True)
 class Deck:
     wands: list[Card]
