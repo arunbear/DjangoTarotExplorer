@@ -34,3 +34,6 @@ def trumps(request):
 
 def about(request):
     return render(request, 'gallery/about.html')
+
+def deal(request):
+    return render(request, 'gallery/deal.html')

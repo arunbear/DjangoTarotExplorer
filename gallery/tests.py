@@ -42,6 +42,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.check_dropdown_for_pips(navbar)
         self.assertEqual("Trumps", links[2].text)
         self.assertEqual("/gallery/trumps/", links[2].get("href"))
+        self.check_deal_link(links[3])
 
     def check_about_link(self, link: bs4.element.Tag):
         self.assertEqual(type(link), bs4.element.Tag)
@@ -90,6 +91,31 @@ class GalleryIndexViewSpecs(TestCase):
             with self.subTest():
                 self.assertEqual(expected_link.text, got_link.text)
                 self.assertEqual(expected_link.path, got_link.get("href"))
+
+    def check_deal_link(self, link):
+        self.assertEqual(link.text, "Deal")
+
+        expected_href = "/gallery/deal/"
+        self.assertEqual(link.get("href"), expected_href)
+        self.check_deal_page(expected_href)
+
+    def check_deal_page(self, expected_href: str):
+        response = self.client.get(expected_href)
+        self.assertEqual(HTTPStatus.OK, response.status_code)
+        self.assertTemplateUsed(response, "gallery/deal.html")
+
+        soup = BeautifulSoup(response.content, features="html.parser")
+        card_holder = soup.find("div", {"class": "card-holder"})
+        self.assertIsNotNone(card_holder)
+
+        cards = card_holder.select("img")
+        self.assertEqual(len(cards), 2)
+
+        button_holder = soup.find("div", {"class": "button-holder"})
+        self.assertIsNotNone(button_holder)
+        buttons = button_holder.select("button")
+        self.assertEqual(len(buttons), 3)
+
 
 class GridViewSpec:
     # Nest to prevent unittest from instantiating an ABC
