@@ -4,8 +4,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script>
+        function shuffleCards(images) {
+            images.sort(() => Math.random() - 0.5);
+        }
+
         const images = {{ images_json|safe }};
-        images.sort(() => Math.random() - 0.5);
+        shuffleCards(images);
         const indexForCard = [0, 1];
 
         function refreshCards() {
