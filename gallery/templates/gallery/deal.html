@@ -23,13 +23,18 @@
             dealIndex = (dealIndex + 2) % images.length;
             if (dealIndex > 1) {
                 $('#btn-back').prop('disabled', false);
+                $('#btn-shuffle').prop('disabled', false);
             }
+        }
+
+        function disableBackButton() {
+            $('#btn-back').prop('disabled', true);
         }
 
         function back() {
             dealIndex -= 2;
             if (dealIndex < 1) {
-                $('#btn-back').prop('disabled', true);
+                disableBackButton();
             }
         }
 
@@ -40,6 +45,12 @@
             });
             $('#btn-back').on('click', function () {
                 back();
+                refreshCards();
+            });
+            $('#btn-shuffle').on('click', function () {
+                shuffleCards(images);
+                dealIndex = 0;
+                disableBackButton();
                 refreshCards();
             });
         });
@@ -77,7 +88,7 @@
         </figure>
     </div>
     <div class="button-holder">
-        <button id="btn-shuffle" class="button" title="Shuffle the whole deck">Shuffle</button>
+        <button id="btn-shuffle" class="button" title="Reshuffle the whole deck" disabled="disabled">Shuffle</button>
         <button id="btn-deal" class="button" title="Deal cards from the deck">Deal</button>
         <button id="btn-back" class="button" title="View previous cards" disabled="disabled">Back</button>
     </div>
