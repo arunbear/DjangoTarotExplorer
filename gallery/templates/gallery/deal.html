@@ -14,7 +14,9 @@
 
         function refreshCards() {
             $('#image-1').prop('src', images[indexForCard[0]]);
+            $('#caption-1').text(indexForCard[0] + 1);
             $('#image-2').prop('src', images[indexForCard[1]]);
+            $('#caption-2').text(indexForCard[1] + 1);
         }
 
         function deal() {
@@ -27,8 +29,8 @@
 
         $(document).ready(function() {
             $('#btn-deal').on('click', function () {
-                deal();
                 refreshCards();
+                deal();
             });
         });
     </script>
@@ -43,7 +45,7 @@
         justify-items: center;
     }
 
-    .card-holder img {
+    .card-holder figure img {
         max-width: 100%;
     }
 
@@ -55,8 +57,14 @@
 
 {% block content %}
     <div class="card-holder">
-        <img id="image-1" class="card" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg" alt="tarot-card" />
-        <img id="image-2" class="card" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg" alt="tarot-card" />
+        <figure>
+            <img id="image-1" class="card" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg" alt="tarot-card">
+            <figcaption id="caption-1" style="text-align: center"></figcaption>
+        </figure>
+        <figure>
+            <img id="image-2" class="card" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg" alt="tarot-card">
+            <figcaption id="caption-2" style="text-align: center"></figcaption>
+        </figure>
     </div>
     <div class="button-holder">
         <button id="btn-shuffle" class="button" title="Shuffle the whole deck">Shuffle</button>
