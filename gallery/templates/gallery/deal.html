@@ -10,27 +10,37 @@
 
         const images = {{ images_json|safe }};
         shuffleCards(images);
-        const indexForCard = [0, 1];
+        let dealIndex = -2;
 
         function refreshCards() {
-            $('#image-1').prop('src', images[indexForCard[0]]);
-            $('#caption-1').text(indexForCard[0] + 1);
-            $('#image-2').prop('src', images[indexForCard[1]]);
-            $('#caption-2').text(indexForCard[1] + 1);
+            $('#image-1').prop('src', images[dealIndex]);
+            $('#caption-1').text(dealIndex + 1);
+            $('#image-2').prop('src', images[dealIndex + 1]);
+            $('#caption-2').text(dealIndex + 2);
         }
 
         function deal() {
-            console.log(indexForCard);
-            for (let i = 0; i < indexForCard.length; i++) {
-                indexForCard[i] = (indexForCard[i] + 2) % images.length;
+            dealIndex = (dealIndex + 2) % images.length;
+            if (dealIndex > 1) {
+                $('#btn-back').prop('disabled', false);
             }
-            console.log(indexForCard);
+        }
+
+        function back() {
+            dealIndex -= 2;
+            if (dealIndex < 1) {
+                $('#btn-back').prop('disabled', true);
+            }
         }
 
         $(document).ready(function() {
             $('#btn-deal').on('click', function () {
-                refreshCards();
                 deal();
+                refreshCards();
+            });
+            $('#btn-back').on('click', function () {
+                back();
+                refreshCards();
             });
         });
     </script>
@@ -69,6 +79,6 @@
     <div class="button-holder">
         <button id="btn-shuffle" class="button" title="Shuffle the whole deck">Shuffle</button>
         <button id="btn-deal" class="button" title="Deal cards from the deck">Deal</button>
-        <button id="btn-back" class="button" title="View previous cards">Back</button>
+        <button id="btn-back" class="button" title="View previous cards" disabled="disabled">Back</button>
     </div>
 {% endblock %}
