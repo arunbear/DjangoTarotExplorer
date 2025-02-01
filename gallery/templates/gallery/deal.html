@@ -17,8 +17,19 @@
             $('#image-2').prop('src', images[indexForCard[1]]);
         }
 
+        function deal() {
+            console.log(indexForCard);
+            for (let i = 0; i < indexForCard.length; i++) {
+                indexForCard[i] = (indexForCard[i] + 2) % images.length;
+            }
+            console.log(indexForCard);
+        }
+
         $(document).ready(function() {
-            refreshCards();
+            $('#btn-deal').on('click', function () {
+                deal();
+                refreshCards();
+            });
         });
     </script>
 {% endblock %}
@@ -44,12 +55,12 @@
 
 {% block content %}
     <div class="card-holder">
-        <img id="image-1" class="card" src="" alt="tarot-card" />
-        <img id="image-2" class="card" src="" alt="tarot-card" />
+        <img id="image-1" class="card" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg" alt="tarot-card" />
+        <img id="image-2" class="card" src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg" alt="tarot-card" />
     </div>
     <div class="button-holder">
-        <button id="btn-prev" class="button">Previous</button>
-        <button id="btn-next" class="button">Next</button>
-        <button id="btn-reshuffle" class="button">Reshuffle</button>
+        <button id="btn-shuffle" class="button" title="Shuffle the whole deck">Shuffle</button>
+        <button id="btn-deal" class="button" title="Deal cards from the deck">Deal</button>
+        <button id="btn-back" class="button" title="View previous cards">Back</button>
     </div>
 {% endblock %}
