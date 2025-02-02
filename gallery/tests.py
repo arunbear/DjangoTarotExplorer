@@ -34,22 +34,22 @@ class GalleryIndexViewSpecs(TestCase):
         links = navbar.select("a.toplink")
         self.check_about_link(links[0])
         self.assertEqual(links[0].text, "About")
-        self.assertEqual(links[0].get("href"), "/gallery/about/")
+        self.assertEqual("/gallery/about.html", links[0].get("href"))
         self.assertEqual(links[1].text, "All")
-        self.assertEqual(links[1].get("href"), "/gallery/")
+        self.assertEqual("/gallery/all.html", links[1].get("href"))
 
         self.check_dropdown_for_royals(navbar)
         self.check_dropdown_for_pips(navbar)
         self.assertEqual("Trumps", links[2].text)
-        self.assertEqual("/gallery/trumps/", links[2].get("href"))
+        self.assertEqual("/gallery/trumps.html", links[2].get("href"))
         self.check_deal_link(links[3])
 
     def check_about_link(self, link: bs4.element.Tag):
         self.assertEqual(type(link), bs4.element.Tag)
         self.assertEqual(link.text, "About")
 
-        expected_href = "/gallery/about/"
-        self.assertEqual(link.get("href"), expected_href)
+        expected_href = "/gallery/about.html"
+        self.assertEqual(expected_href, link.get("href"))
 
         response = self.client.get(expected_href)
         self.assertEqual(HTTPStatus.OK, response.status_code)
@@ -64,9 +64,9 @@ class GalleryIndexViewSpecs(TestCase):
         dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
         dropdown_links = dropdown_content.select("a")
         self.assertEqual("By Suite", dropdown_links[0].text)
-        self.assertEqual("/gallery/royals/by/suite/", dropdown_links[0].get("href"))
+        self.assertEqual("/gallery/royals/by/suite.html", dropdown_links[0].get("href"))
         self.assertEqual("By Rank", dropdown_links[1].text)
-        self.assertEqual("/gallery/royals/by/rank/", dropdown_links[1].get("href"))
+        self.assertEqual("/gallery/royals/by/rank.html", dropdown_links[1].get("href"))
 
     def check_dropdown_for_pips(self, navbar):
         dropdown = navbar.find("div", {"id": "dropdown-pips"})
@@ -80,11 +80,11 @@ class GalleryIndexViewSpecs(TestCase):
         dropdown_links = dropdown_content.select("a")
         Link = namedtuple('Link', ['text', 'path'])
         expected_links = [
-            Link("By Number", "/gallery/pips/by/number"),
-            Link("Wands", "/gallery/pips/wands/"),
-            Link("Cups", "/gallery/pips/cups/"),
-            Link("Swords", "/gallery/pips/swords/"),
-            Link("Coins", "/gallery/pips/coins/"),
+            Link("By Number", "/gallery/pips/by/number.html"),
+            Link("Wands", "/gallery/pips/wands.html"),
+            Link("Cups", "/gallery/pips/cups.html"),
+            Link("Swords", "/gallery/pips/swords.html"),
+            Link("Coins", "/gallery/pips/coins.html"),
         ]
         self.assertEqual(len(expected_links), len(dropdown_links))
         for expected_link, got_link in zip(expected_links, dropdown_links):
@@ -95,8 +95,8 @@ class GalleryIndexViewSpecs(TestCase):
     def check_deal_link(self, link):
         self.assertEqual(link.text, "Deal")
 
-        expected_href = "/gallery/deal/"
-        self.assertEqual(link.get("href"), expected_href)
+        expected_href = "/gallery/deal.html"
+        self.assertEqual(expected_href, link.get("href"))
         self.check_deal_page(expected_href)
 
     def check_deal_page(self, expected_href: str):
@@ -122,7 +122,7 @@ class GridViewSpec:
     class CanViewAll(TestCase, metaclass=ABCMeta):
         def test_that_all_cards_can_can_be_viewed(self):
             response = self.client.get(self.page_uri())
-            self.assertEqual(HTTPStatus.OK, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code, f"{self.page_uri()} is OK")
 
             soup = BeautifulSoup(response.content, features="html.parser")
             grid = soup.find("div", {"class": "grid"})
@@ -172,7 +172,7 @@ class CanViewAllRoyalsBySuite(GridViewSpec.CanViewAll):
         return 4 * 4
 
     def page_uri(self):
-        return "/gallery/royals/by/suite/"
+        return "/gallery/royals/by/suite.html"
 
     def expected_cards(self):
         return royals_by_suite
@@ -183,7 +183,7 @@ class CanViewAllRoyalsByRank(GridViewSpec.CanViewAll):
         return 4 * 4
 
     def page_uri(self):
-        return "/gallery/royals/by/rank/"
+        return "/gallery/royals/by/rank.html"
 
     def expected_cards(self):
         return royals_by_rank
@@ -193,7 +193,7 @@ class CanViewAllPips(GridViewSpec.CanViewAll):
         return 10 * 4
 
     def page_uri(self):
-        return "/gallery/pips/by/number"
+        return "/gallery/pips/by/number.html"
 
     def expected_cards(self):
         pips = [
@@ -215,7 +215,7 @@ class CanViewAllWands(GridViewSpec.CanViewAll):
         return 10 + 4
 
     def page_uri(self):
-        return "/gallery/pips/wands/"
+        return "/gallery/pips/wands.html"
 
     def expected_cards(self):
         pips = [
@@ -230,7 +230,7 @@ class CanViewAllCups(GridViewSpec.CanViewAll):
         return 10 + 4
 
     def page_uri(self):
-        return "/gallery/pips/cups/"
+        return "/gallery/pips/cups.html"
 
     def expected_cards(self):
         return deck.cups
@@ -240,7 +240,7 @@ class CanViewAllSwords(GridViewSpec.CanViewAll):
         return 10 + 4
 
     def page_uri(self):
-        return "/gallery/pips/swords/"
+        return "/gallery/pips/swords.html"
 
     def expected_cards(self):
         return deck.swords
@@ -250,7 +250,7 @@ class CanViewAllCoins(GridViewSpec.CanViewAll):
         return 10 + 4
 
     def page_uri(self):
-        return "/gallery/pips/coins/"
+        return "/gallery/pips/coins.html"
 
     def expected_cards(self):
         return deck.coins
@@ -260,7 +260,7 @@ class CanViewAllTrumps(GridViewSpec.CanViewAll):
         return 22
 
     def page_uri(self):
-        return "/gallery/trumps/"
+        return "/gallery/trumps.html"
 
     def expected_cards(self):
         return deck.trumps
