@@ -8,7 +8,9 @@
             images.sort(() => Math.random() - 0.5);
         }
 
-        const images = {{ images_json|safe }};
+        const allImages = {{ images_json|safe }};
+        const pipImages = allImages.slice(0, 56);
+        let images = pipImages;
         shuffleCards(images);
         let dealIndex = -2;
 
@@ -56,11 +58,31 @@
                 disableBackButton();
                 refreshCards();
             });
+            $('#chk-include-trumps').change(function () {
+                if (this.checked) {
+                    images = allImages;
+                    shuffleCards(images);
+                    dealIndex = 0;
+                    disableBackButton();
+                    refreshCards();
+                }
+                else {
+                    images = pipImages;
+                    shuffleCards(images);
+                    dealIndex = 0;
+                    disableBackButton();
+                    refreshCards();
+                }
+            });
         });
     </script>
 {% endblock %}
 
 {% block local_style %}
+    body {
+        font-family: Arial, sans-serif;
+    }
+
     .card-holder {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -94,6 +116,11 @@
         </figure>
     </div>
     <div class="button-holder">
+        <label>
+            Include trumps
+            <input type="checkbox" id="chk-include-trumps"/>
+        </label>
+        <br/>
         <button id="btn-shuffle" class="button" title="Reshuffle the whole deck" disabled="disabled">Shuffle</button>
         <button id="btn-deal" class="button" title="Deal cards from the deck">Deal</button>
         <button id="btn-back" class="button" title="View previous cards" disabled="disabled">Back</button>
