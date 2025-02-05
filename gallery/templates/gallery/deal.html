@@ -43,6 +43,13 @@
             }
         }
 
+        function resetDeck() {
+            shuffleCards(images);
+            dealIndex = 0;
+            disableBackButton();
+            refreshCards();
+        }
+
         $(document).ready(function() {
             $('#btn-deal').on('click', function () {
                 deal();
@@ -53,25 +60,15 @@
                 refreshCards();
             });
             $('#btn-shuffle').on('click', function () {
-                shuffleCards(images);
-                dealIndex = 0;
-                disableBackButton();
-                refreshCards();
             });
             $('#chk-include-trumps').change(function () {
                 if (this.checked) {
                     images = allImages;
-                    shuffleCards(images);
-                    dealIndex = 0;
-                    disableBackButton();
-                    refreshCards();
+                    resetDeck();
                 }
                 else {
                     images = pipImages;
-                    shuffleCards(images);
-                    dealIndex = 0;
-                    disableBackButton();
-                    refreshCards();
+                    resetDeck();
                 }
             });
         });
