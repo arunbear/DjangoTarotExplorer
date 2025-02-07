@@ -12,7 +12,9 @@
         const pipImages = allImages.slice(0, 56);
         let images = pipImages;
         shuffleCards(images);
+
         let dealIndex = -2;
+        let numOfCards = 2;
 
         function refreshCards() {
             $('#image-1').prop('src', images[dealIndex]);
@@ -22,7 +24,7 @@
         }
 
         function deal() {
-            dealIndex = (dealIndex + 2) % images.length;
+            dealIndex = (dealIndex + numOfCards) % images.length;
             if (dealIndex > 1) {
                 $('#btn-back').prop('disabled', false);
                 $('#btn-shuffle').prop('disabled', false);
@@ -37,7 +39,7 @@
         }
 
         function back() {
-            dealIndex -= 2;
+            dealIndex -= numOfCards;
             if (dealIndex < 1) {
                 disableBackButton();
             }
@@ -69,6 +71,13 @@
                 else {
                     images = pipImages;
                     resetDeck();
+                }
+            });
+
+            $("input:radio").click(function () {
+                let value = $(this).val();
+                if (value === 2) {
+                    numOfCards = 2;
                 }
             });
         });
@@ -125,6 +134,13 @@
             Include trumps
             <input type="checkbox" id="chk-include-trumps"/>
         </label>
+
+        | Number of cards:
+        <input type="radio" id="num_cards_2" name="num_cards" value="2" checked="checked">
+        <label for="num_cards_2">2</label>
+        <input type="radio" id="num_cards_3" name="num_cards" value="3">
+        <label for="num_cards_3">3</label>
+
         <br/>
         <button id="btn-shuffle" class="button" title="Reshuffle the whole deck" disabled="disabled">Shuffle</button>
         <button id="btn-deal" class="button" title="Deal cards from the deck">Deal</button>
