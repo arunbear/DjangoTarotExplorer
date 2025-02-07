@@ -13,25 +13,31 @@
         let images = pipImages;
         shuffleCards(images);
 
-        let dealIndex = -2;
         let numOfCards = 2;
+        let dealIndex = 0;
 
         function refreshCards() {
             $('#image-1').prop('src', images[dealIndex]);
             $('#caption-1').text(dealIndex + 1);
             $('#image-2').prop('src', images[dealIndex + 1]);
             $('#caption-2').text(dealIndex + 2);
+
+            if (numOfCards === 3) {
+                $('#image-3').prop('src', images[dealIndex + 2]);
+                $('#caption-3').text(dealIndex + 3);
+            }
         }
 
         function deal() {
             dealIndex = (dealIndex + numOfCards) % images.length;
-            if (dealIndex > 1) {
+            if (dealIndex >= numOfCards) {
                 $('#btn-back').prop('disabled', false);
                 $('#btn-shuffle').prop('disabled', false);
             }
             else {
                 disableBackButton();
             }
+            console.log('next deal from:' + dealIndex);
         }
 
         function disableBackButton() {
@@ -39,10 +45,12 @@
         }
 
         function back() {
-            dealIndex -= numOfCards;
-            if (dealIndex < 1) {
+            dealIndex = (dealIndex - numOfCards) % images.length;
+            //dealIndex -= numOfCards;
+            if (dealIndex < numOfCards) {
                 disableBackButton();
             }
+            console.log('next deal from:' + dealIndex);
         }
 
         function resetDeck() {
@@ -62,6 +70,7 @@
                 refreshCards();
             });
             $('#btn-shuffle').on('click', function () {
+                resetDeck();
             });
             $('#chk-include-trumps').change(function () {
                 if (this.checked) {
@@ -80,13 +89,16 @@
                     numOfCards = 2;
                     $('#figure-3').css('display', 'none');
                     $('#card-holder').css('grid-template-columns', '1fr 1fr');
+                    refreshCards();
                 }
                 else if (value === '3') {
-                    //numOfCards = 3;
+                    numOfCards = 3;
                     $('#card-holder').css('grid-template-columns', '1fr 1fr 1fr');
                     $('#figure-3').css('display', 'block');
+                    refreshCards();
                 }
             });
+            refreshCards();
         });
     </script>
 {% endblock %}
