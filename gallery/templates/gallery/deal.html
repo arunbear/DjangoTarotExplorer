@@ -9,7 +9,7 @@
         }
 
         const allImages = {{ images_json|safe }};
-        const pipImages = allImages.slice(0, 56);
+        const pipImages = allImages.slice(0, 8); //56
         let images = pipImages;
         shuffleCards(images);
 
@@ -31,7 +31,7 @@
         function deal() {
             dealIndex = (dealIndex + numOfCards) % images.length;
             if (dealIndex >= numOfCards) {
-                $('#btn-back').prop('disabled', false);
+                enableBackButton();
                 $('#btn-shuffle').prop('disabled', false);
             }
             else {
@@ -40,13 +40,16 @@
             console.log('next deal from:' + dealIndex);
         }
 
+        function enableBackButton() {
+            $('#btn-back').prop('disabled', false);
+        }
+
         function disableBackButton() {
             $('#btn-back').prop('disabled', true);
         }
 
         function back() {
             dealIndex = (dealIndex - numOfCards) % images.length;
-            //dealIndex -= numOfCards;
             if (dealIndex < numOfCards) {
                 disableBackButton();
             }
