@@ -14,30 +14,30 @@
         shuffleCards(images);
 
         let numOfCards = 2;
-        let dealIndex = 0;
+        let cardsFromIndex = 0;
 
         function refreshCards() {
-            $('#image-1').prop('src', images[dealIndex]);
-            $('#caption-1').text(dealIndex + 1);
-            $('#image-2').prop('src', images[dealIndex + 1]);
-            $('#caption-2').text(dealIndex + 2);
+            $('#image-1').prop('src', images[cardsFromIndex]);
+            $('#caption-1').text(cardsFromIndex + 1);
+            $('#image-2').prop('src', images[cardsFromIndex + 1]);
+            $('#caption-2').text(cardsFromIndex + 2);
 
             if (numOfCards === 3) {
-                $('#image-3').prop('src', images[dealIndex + 2]);
-                $('#caption-3').text(dealIndex + 3);
+                $('#image-3').prop('src', images[cardsFromIndex + 2]);
+                $('#caption-3').text(cardsFromIndex + 3);
             }
         }
 
         function deal() {
-            dealIndex = (dealIndex + numOfCards) % images.length;
-            if (dealIndex >= numOfCards) {
+            cardsFromIndex = (cardsFromIndex + numOfCards) % images.length;
+            if (cardsFromIndex >= numOfCards) {
                 enableBackButton();
                 $('#btn-shuffle').prop('disabled', false);
             }
             else {
                 disableBackButton();
             }
-            console.log('next deal from:' + dealIndex);
+            console.log('cardsFromIndex: ' + cardsFromIndex);
         }
 
         function enableBackButton() {
@@ -49,16 +49,16 @@
         }
 
         function back() {
-            dealIndex = (dealIndex - numOfCards) % images.length;
-            if (dealIndex < numOfCards) {
+            cardsFromIndex = (cardsFromIndex - numOfCards) % images.length;
+            if (cardsFromIndex < numOfCards) {
                 disableBackButton();
             }
-            console.log('next deal from:' + dealIndex);
+            console.log('cardsFromIndex: ' + cardsFromIndex);
         }
 
         function resetDeck() {
             shuffleCards(images);
-            dealIndex = 0;
+            cardsFromIndex = 0;
             disableBackButton();
             refreshCards();
         }
