@@ -36,4 +36,8 @@ def about(request):
     return render(request, 'gallery/about.html')
 
 def deal(request):
-    return render(request, 'gallery/deal.html', context={'images_json': gallery.models.all_cards_json})
+    context = {
+        'images_json': gallery.models.all_cards_json,
+        'back_of_card_img': 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Waite%E2%80%93Smith_Tarot_Roses_and_Lilies_cropped.jpg'
+    }
+    return render(request, 'gallery/deal.html', context=context)
