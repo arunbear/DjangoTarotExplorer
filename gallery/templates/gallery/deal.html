@@ -9,7 +9,7 @@
         }
 
         const allImages = {{ images_json|safe }};
-        const pipImages = allImages.slice(0, 8); //56
+        const pipImages = allImages.slice(0, 56);
         let images = pipImages;
         shuffleCards(images);
 
@@ -29,7 +29,10 @@
         }
 
         function deal() {
-            cardsFromIndex = (cardsFromIndex + numOfCards) % images.length;
+            if (moreCardsToDeal()) {
+                cardsFromIndex += numOfCards;
+            }
+
             if (cardsFromIndex >= numOfCards) {
                 enableBackButton();
                 $('#btn-shuffle').prop('disabled', false);
@@ -37,7 +40,19 @@
             else {
                 disableBackButton();
             }
+
+            if (!moreCardsToDeal()) {
+                disableDealButton();
+            }
             console.log('cardsFromIndex: ' + cardsFromIndex);
+        }
+
+        function moreCardsToDeal() {
+            return cardsFromIndex + numOfCards < images.length;
+        }
+
+        function disableDealButton() {
+            $('#btn-deal').prop('disabled', true);
         }
 
         function enableBackButton() {
@@ -48,10 +63,17 @@
             $('#btn-back').prop('disabled', true);
         }
 
+        function enableDealButton() {
+            $('#btn-deal').prop('disabled', false);
+        }
+
         function back() {
             cardsFromIndex = (cardsFromIndex - numOfCards) % images.length;
             if (cardsFromIndex < numOfCards) {
                 disableBackButton();
+            }
+            if (moreCardsToDeal()) {
+                enableDealButton();
             }
             console.log('cardsFromIndex: ' + cardsFromIndex);
         }
