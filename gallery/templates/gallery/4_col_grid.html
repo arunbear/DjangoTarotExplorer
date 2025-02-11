@@ -15,59 +15,54 @@
 {% endblock %}
 
 {% block local_scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script>
-    function handleDragStart (evt) {
-        console.log('Drag started');
-        console.log("Drag source: %o", evt.target);
-        // store dragged img for use when dropping
-        evt.dataTransfer.setData('text/html', evt.target.id);
-        console.log("draggedNodeId: %s", evt.target.id);
-    }
+$(function () {
+    let draggedImage;
 
-    function handleDragOver (evt) {
-        evt.dataTransfer.dropEffect = 'move';
-        evt.preventDefault();
-    }
-
-    function handleDrop (evt) {
-        console.log('Drop handler ...');
-        console.log("Drop target: %o", evt.target);
-
-        let draggedNodeId;
-        let draggedNode;
-        let dropSiteContainerId;
-        let dropSiteContainer;
-
-        draggedNodeId = evt.dataTransfer.getData('text/html');
-        console.log("draggedNodeId: %s", draggedNodeId);
-        draggedNode = document.getElementById(draggedNodeId);
-
-        if (draggedNode !== evt.target) {
-            console.log("Can do drop ...");
-            // replace drag site image with the one at the drop site
-            dropSiteContainerId = evt.target.parentNode.parentNode.getAttribute('id');
-            console.log("dopSiteContainerId: %s", dropSiteContainerId);
-            draggedNode.parentNode.parentNode.appendChild(evt.target.parentNode);
-
-            // replace drop site image with the one from the drag site
-            dropSiteContainer = document.getElementById(dropSiteContainerId);
-            dropSiteContainer.appendChild(draggedNode.parentNode);
-        } else {
-            console.log("Can not do drop onto itself");
+    $(".draggable").draggable({
+        'snap': true,
+        'stack': '.draggable',
+        'start': function () {
+            console.log('Dragging: %s', $(this).attr('id'));
+            draggedImage = $(this);
         }
-    }
+    });
+
+    $(".card-container").droppable({
+        'drop': function (event, ui) {
+            console.log("Dropping on to: " + event.target.id);
+            let dropSiteContainer = $(this);
+
+            if (draggedImage !== event.target) {
+                console.log("Can do drop");
+                // replace drag site image with the one at the drop site
+                console.log("dropSiteContainer: %s", dropSiteContainer.attr('id'));
+                draggedImage.parent().parent().append(dropSiteContainer.find('a'));
+
+                // replace drop site image with the one from the drag site
+                dropSiteContainer.append(draggedImage.parent());
+                draggedImage.css({top: 'initial', left: 'initial'}); // ensure image is placed evenly in container
+            } else {
+                console.log("Can not do drop onto itself");
+            }
+        }
+    });
+
+});
 </script>
 {% endblock %}
 
 {% block content %}
 <div class="grid">
     {% for card in cards %}
-        <div id="drag-container-{{ forloop.counter }}" class="card-container" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
+        <div id="drag-container-{{ forloop.counter }}" class="card-container">
             <a class="card"
                id="link-to-card-{{ forloop.counter }}"
                href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
                 <img src="{{ card.img_src }}"
-                     ondragstart="handleDragStart(event)"
+                     class="draggable"
                      id="image-{{ forloop.counter }}"
                      alt="{{ card.file }}"/>
             </a>
