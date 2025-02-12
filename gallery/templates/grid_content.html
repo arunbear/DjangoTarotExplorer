@@ -1,0 +1,14 @@
+<div class="grid">
+    {% for card in cards %}
+        <div id="drag-container-{{ forloop.counter }}" class="card-container">
+            <a class="card"
+               id="link-to-card-{{ forloop.counter }}"
+               href="https://en.wikipedia.org/wiki/Rider%E2%80%93Waite_Tarot#/media/File:{{ card.file }}">
+                <img src="{{ card.img_src }}"
+                     class="draggable"
+                     id="image-{{ forloop.counter }}"
+                     alt="{{ card.file }}"/>
+            </a>
+        </div>
+    {% endfor %}
+</div>
