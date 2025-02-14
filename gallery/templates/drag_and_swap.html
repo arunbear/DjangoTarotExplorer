@@ -27,8 +27,12 @@ $(function () {
 
                 // replace drop site image with the one from the drag site
                 dropSiteContainer.append(draggedImage.parent());
+
+                // JQuery leaves image css in a weird state, so ...
                 draggedImage.css({top: 'initial', left: 'initial'}); // ensure image is placed evenly in container
-            } else {
+                $('.draggable').css('z-index', 0); // prevent z index from blocking drop down menu
+            } 
+            else {
                 console.log("Can not do drop onto itself");
             }
         }
