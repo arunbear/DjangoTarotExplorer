@@ -1,4 +1,4 @@
-from django.urls import path
+from django_distill import distill_path as path
 
 from . import views
 

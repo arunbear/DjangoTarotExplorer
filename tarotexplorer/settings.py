@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_distill',
     'gallery.apps.GalleryConfig'
 ]
 
@@ -67,6 +68,8 @@ TEMPLATES = [
         },
     },
 ]
+
+STATIC_ROOT = BASE_DIR / 'static_root'
 
 WSGI_APPLICATION = 'tarotexplorer.wsgi.application'
 
