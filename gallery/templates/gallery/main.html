@@ -40,7 +40,16 @@
             <a href="{% url 'gallery:coins' %}">Coins</a>
         </div>
     </div>
-    <a href="{% url 'gallery:trumps' %}" class="toplink">Trumps</a>
+
+    <div class="dropdown" id="dropdown-trumps">
+        <button class="dropbtn">Trumps
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="{% url 'gallery:trumps' %}">By Number</a>
+            <a href="{% url 'gallery:trumps_in_pairs' %}">In Pairs</a>
+        </div>
+    </div>
     <a href="{% url 'gallery:deal' %}" class="toplink">Deal</a>
 
 </div>

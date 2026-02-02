@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from django.test import TestCase
 from django.urls import reverse
 
-from gallery.models import deck
+from gallery.models import deck, trumps_in_pairs
 
 royals_by_suite = [
     deck.wands[10],  deck.wands[11],  deck.wands[12],  deck.wands[13],
@@ -40,9 +40,8 @@ class GalleryIndexViewSpecs(TestCase):
 
         self.check_dropdown_for_royals(navbar)
         self.check_dropdown_for_pips(navbar)
-        self.assertEqual("Trumps", links[2].text)
-        self.assertEqual("/gallery/trumps.html", links[2].get("href"))
-        self.check_deal_link(links[3])
+        self.check_dropdown_for_trumps(navbar)
+        self.check_deal_link(links[2])
 
     def check_about_link(self, link: bs4.element.Tag):
         self.assertEqual(type(link), bs4.element.Tag)
@@ -85,6 +84,27 @@ class GalleryIndexViewSpecs(TestCase):
             Link("Cups", "/gallery/pips/cups.html"),
             Link("Swords", "/gallery/pips/swords.html"),
             Link("Coins", "/gallery/pips/coins.html"),
+        ]
+        self.assertEqual(len(expected_links), len(dropdown_links))
+        for expected_link, got_link in zip(expected_links, dropdown_links):
+            with self.subTest():
+                self.assertEqual(expected_link.text, got_link.text)
+                self.assertEqual(expected_link.path, got_link.get("href"))
+
+    def check_dropdown_for_trumps(self, navbar):
+        dropdown = navbar.find("div", {"id": "dropdown-trumps"})
+        self.assertIsNotNone(dropdown)
+        button = dropdown.find("button")
+        self.assertRegex(button.text, "Trumps")
+
+        dropdown_content = dropdown.find("div", {"class": "dropdown-content"})
+        self.assertIsNotNone(dropdown_content)
+
+        dropdown_links = dropdown_content.select("a")
+        Link = namedtuple('Link', ['text', 'path'])
+        expected_links = [
+            Link("By Number", "/gallery/trumps/by/number.html"),
+            Link("In Pairs", "/gallery/trumps/in/pairs.html"),
         ]
         self.assertEqual(len(expected_links), len(dropdown_links))
         for expected_link, got_link in zip(expected_links, dropdown_links):
@@ -255,12 +275,22 @@ class CanViewAllCoins(GridViewSpec.CanViewAll):
     def expected_cards(self):
         return deck.coins
 
-class CanViewAllTrumps(GridViewSpec.CanViewAll):
+class CanViewTrumpsInPairs(GridViewSpec.CanViewAll):
     def expected_number_of_cards(self):
         return 22
 
     def page_uri(self):
-        return "/gallery/trumps.html"
+        return "/gallery/trumps/in/pairs.html"
+
+    def expected_cards(self):
+        return trumps_in_pairs()
+
+class CanViewTrumpsByNumber(GridViewSpec.CanViewAll):
+    def expected_number_of_cards(self):
+        return 22
+
+    def page_uri(self):
+        return "/gallery/trumps/by/number.html"
 
     def expected_cards(self):
         return deck.trumps

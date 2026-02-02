@@ -159,5 +159,22 @@ def coins():
 def trumps():
     return deck.trumps
 
+def trumps_in_pairs():
+    # Natural pairs using Waite-Smith trump ordinals
+    pairs = (
+         4, 3,
+         5, 9,
+         1, 2,
+        11, 12,
+         7,  8,
+        15,  6,
+        21, 16,
+        20, 13,
+        19, 18,
+        17, 14,
+        10,  0,
+    )
+    return [deck.trumps[i] for i in pairs]
+
 def all_cards_json():
     return json.dumps([c.img_src() for c in deck.all_cards()])
