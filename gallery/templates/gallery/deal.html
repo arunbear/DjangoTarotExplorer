@@ -1,148 +1,83 @@
 {% extends "gallery/main.html" %}
+{% load static %}
 
 {% block local_scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/tarot-deck.js' %}"></script>
 
     <script>
-        /* Randomize array in-place using Durstenfeld shuffle algorithm */
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i >= 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                const temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
-            }
+        let deck;
+
+        function updateButtonStates(states) {
+            $('#btn-deal').prop('disabled', !states.dealEnabled);
+            $('#btn-back').prop('disabled', !states.backEnabled);
+            $('#btn-shuffle').prop('disabled', !states.shuffleEnabled);
         }
-
-        function shuffleCards(images) {
-            shuffleArray(images)
-        }
-
-        const backOfCardImgSrc = '{{ back_of_card_img }}';
-
-        const allImages = {{ images_json|safe }};
-        const pipImages = allImages.slice(0, 56);
-        let images = pipImages;
-        shuffleCards(images);
-
-        let numOfCards = 2;
-        let cardsFromIndex = 0;
 
         function refreshCards() {
-            $('#image-1').prop('src', images[cardsFromIndex]);
-            $('#caption-1').text(cardsFromIndex + 1);
-            $('#image-2').prop('src', images[cardsFromIndex + 1]);
-            $('#caption-2').text(cardsFromIndex + 2);
-
-            if (numOfCards === 3) {
-                console.log('moreCardsToDeal: %s', moreCardsToDeal());
-                if (moreCardsToDeal()) {
-                    $('#image-3').prop('src', images[cardsFromIndex + 2]);
-                    $('#caption-3').text(cardsFromIndex + 3);
-                }
-                else {
-                    $('#image-3').prop('src', backOfCardImgSrc);
-                    $('#caption-3').text('');
-                }
+            const cards = deck.getCurrentCards();
+            
+            $('#image-1').prop('src', cards[0]?.src || deck.backOfCardImgSrc);
+            $('#caption-1').text(cards[0]?.caption || '');
+            
+            $('#image-2').prop('src', cards[1]?.src || deck.backOfCardImgSrc);
+            $('#caption-2').text(cards[1]?.caption || '');
+            
+            if (deck.numOfCards === 3) {
+                $('#figure-3').css('display', 'block');
+                $('#image-3').prop('src', cards[2]?.src || deck.backOfCardImgSrc);
+                $('#caption-3').text(cards[2]?.caption || '');
+            } else {
+                $('#figure-3').css('display', 'none');
             }
-        }
-
-        function deal() {
-            if (moreCardsToDeal()) {
-                cardsFromIndex += numOfCards;
-            }
-
-            if (cardsFromIndex >= numOfCards) {
-                enableBackButton();
-                $('#btn-shuffle').prop('disabled', false);
-            }
-            else {
-                disableBackButton();
-            }
-
-            if (!moreCardsToDeal()) {
-                disableDealButton();
-            }
-            console.log('cardsFromIndex: ' + cardsFromIndex);
-        }
-
-        function moreCardsToDeal() {
-            return cardsFromIndex + numOfCards < images.length;
-        }
-
-        function disableDealButton() {
-            $('#btn-deal').prop('disabled', true);
-        }
-
-        function enableBackButton() {
-            $('#btn-back').prop('disabled', false);
-        }
-
-        function disableBackButton() {
-            $('#btn-back').prop('disabled', true);
-        }
-
-        function enableDealButton() {
-            $('#btn-deal').prop('disabled', false);
-        }
-
-        function back() {
-            cardsFromIndex = (cardsFromIndex - numOfCards) % images.length;
-            if (cardsFromIndex < numOfCards) {
-                disableBackButton();
-            }
-            if (moreCardsToDeal()) {
-                enableDealButton();
-            }
-            console.log('cardsFromIndex: ' + cardsFromIndex);
-        }
-
-        function resetDeck() {
-            shuffleCards(images);
-            cardsFromIndex = 0;
-            disableBackButton();
-            enableDealButton();
-            refreshCards();
         }
 
         $(document).ready(function() {
+            // Initialize deck with data from Django template
+            deck = new TarotDeck({{ images_json|safe }}, '{{ back_of_card_img }}');
+
             $('#btn-deal').on('click', function () {
-                deal();
+                const states = deck.deal();
+                updateButtonStates(states);
                 refreshCards();
             });
+            
             $('#btn-back').on('click', function () {
-                back();
+                const states = deck.back();
+                updateButtonStates(states);
                 refreshCards();
             });
+            
             $('#btn-shuffle').on('click', function () {
-                resetDeck();
+                const states = deck.resetDeck();
+                updateButtonStates(states);
+                refreshCards();
             });
+            
             $('#chk-include-trumps').change(function () {
-                if (this.checked) {
-                    images = allImages;
-                    resetDeck();
-                }
-                else {
-                    images = pipImages;
-                    resetDeck();
-                }
+                deck.setIncludeTrumps(this.checked);
+                const states = deck.getButtonStates();
+                updateButtonStates(states);
+                refreshCards();
             });
 
             $("input:radio").click(function () {
-                let value = $(this).val();
+                const value = $(this).val();
                 if (value === '2') {
-                    numOfCards = 2;
-                    $('#figure-3').css('display', 'none');
+                    deck.setNumOfCards(2);
                     $('#card-holder').css('grid-template-columns', '1fr 1fr');
-                    refreshCards();
-                }
-                else if (value === '3') {
-                    numOfCards = 3;
+                } else if (value === '3') {
+                    deck.setNumOfCards(3);
                     $('#card-holder').css('grid-template-columns', '1fr 1fr 1fr');
-                    $('#figure-3').css('display', 'block');
-                    refreshCards();
                 }
+                const states = deck.getButtonStates();
+                updateButtonStates(states);
+                refreshCards();
             });
+            
+            // Initial render
+            const states = deck.getButtonStates();
+            updateButtonStates(states);
             refreshCards();
         });
     </script>
