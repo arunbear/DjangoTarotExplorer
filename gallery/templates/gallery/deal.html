@@ -23,7 +23,7 @@
             $('#image-2').prop('src', cards[1]?.src || deck.backOfCardImgSrc);
             $('#caption-2').text(cards[1]?.caption || '');
             
-            if (deck.numOfCards === 3) {
+            if (deck.numOfCardsToDeal === 3) {
                 $('#figure-3').css('display', 'block');
                 $('#image-3').prop('src', cards[2]?.src || deck.backOfCardImgSrc);
                 $('#caption-3').text(cards[2]?.caption || '');

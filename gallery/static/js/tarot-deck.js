@@ -5,7 +5,7 @@ class TarotDeck {
         this.images = this.pipImages;
         this.backOfCardImgSrc = backOfCardImgSrc;
         this.cardsFromIndex = 0;
-        this.numOfCards = 2;
+        this.numOfCardsToDeal = 2;
         this.shuffleCards(this.images);
     }
 
@@ -24,18 +24,18 @@ class TarotDeck {
     }
 
     moreCardsToDeal() {
-        return this.cardsFromIndex + this.numOfCards < this.images.length;
+        return this.cardsFromIndex + this.numOfCardsToDeal < this.images.length;
     }
 
     deal() {
         if (this.moreCardsToDeal()) {
-            this.cardsFromIndex += this.numOfCards;
+            this.cardsFromIndex += this.numOfCardsToDeal;
         }
         return this.getButtonStates();
     }
 
     back() {
-        this.cardsFromIndex = (this.cardsFromIndex - this.numOfCards) % this.images.length;
+        this.cardsFromIndex = (this.cardsFromIndex - this.numOfCardsToDeal) % this.images.length;
         if (this.cardsFromIndex < 0) {
             this.cardsFromIndex = 0;
         }
@@ -58,28 +58,28 @@ class TarotDeck {
     }
 
     setNumOfCards(num) {
-        this.numOfCards = num;
+        this.numOfCardsToDeal = num;
         this.cardsFromIndex = 0;
     }
 
     getButtonStates() {
         return {
             dealEnabled: this.moreCardsToDeal(),
-            backEnabled: this.cardsFromIndex >= this.numOfCards,
-            shuffleEnabled: this.cardsFromIndex >= this.numOfCards
+            backEnabled: this.cardsFromIndex >= this.numOfCardsToDeal,
+            shuffleEnabled: this.cardsFromIndex >= this.numOfCardsToDeal
         };
     }
 
     getCurrentCards() {
         const cards = [];
-        for (let i = 0; i < this.numOfCards; i++) {
+        for (let i = 0; i < this.numOfCardsToDeal; i++) {
             const index = this.cardsFromIndex + i;
             if (index < this.images.length) {
                 cards.push({
                     src: this.images[index],
                     caption: index + 1
                 });
-            } else if (i === 2 && this.numOfCards === 3 && this.images.length % 3 !== 0) {
+            } else if (i === 2 && this.numOfCardsToDeal === 3 && this.images.length % 3 !== 0) {
                 // Special case for 3 cards when deck doesn't divide evenly
                 cards.push({
                     src: this.backOfCardImgSrc,

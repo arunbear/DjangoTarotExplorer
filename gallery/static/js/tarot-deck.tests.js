@@ -20,7 +20,7 @@ class TarotDeckTests {
             assert.deepEqual(deck.allImages, mockImages, 'allImages should match');
             assert.equal(deck.pipImages.length, 56, 'pipImages should have 56 cards');
             assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0');
-            assert.equal(deck.numOfCards, 2, 'numOfCards should be 2');
+            assert.equal(deck.numOfCardsToDeal, 2, 'numOfCards should be 2');
             assert.equal(deck.backOfCardImgSrc, 'back.jpg', 'backOfCardImgSrc should match');
         });
 
@@ -87,7 +87,7 @@ class TarotDeckTests {
             const deck = new TarotDeck(mockImages, 'back.jpg');
             
             deck.setNumOfCards(3);
-            assert.equal(deck.numOfCards, 3, 'numOfCards should be 3');
+            assert.equal(deck.numOfCardsToDeal, 3, 'numOfCards should be 3');
             assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0 after setting num cards');
         });
 
