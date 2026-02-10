@@ -109,16 +109,16 @@ class TarotDeckTests {
             const deck = new TarotDeck(mockImages, 'back.jpg');
             deck.setNumOfCards(3);
             
-            assert.true(deck.moreCardsToDeal(), 'Should have more cards to deal initially');
+            assert.true(deck.hasMoreCardsToDeal(), 'Should have more cards to deal initially');
             
             deck.deal(); // Move to position 3
-            assert.true(deck.moreCardsToDeal(), 'Should still have more cards');
+            assert.true(deck.hasMoreCardsToDeal(), 'Should still have more cards');
             
             // Deal multiple times to reach near end
             for (const _ of Array(25)) {
                 deck.deal();
             }
-            assert.false(deck.moreCardsToDeal(), 'Should have no more cards at end');
+            assert.false(deck.hasMoreCardsToDeal(), 'Should have no more cards at end');
         });
 
         QUnit.test('should handle edge case for 3 cards with uneven deck', assert => {

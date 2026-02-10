@@ -23,12 +23,12 @@ class TarotDeck {
         this.shuffleArray(images);
     }
 
-    moreCardsToDeal() {
+    hasMoreCardsToDeal() {
         return this.cardsFromIndex + this.numOfCardsToDeal < this.images.length;
     }
 
     deal() {
-        if (this.moreCardsToDeal()) {
+        if (this.hasMoreCardsToDeal()) {
             this.cardsFromIndex += this.numOfCardsToDeal;
         }
         return this.getButtonStates();
@@ -64,7 +64,7 @@ class TarotDeck {
 
     getButtonStates() {
         return {
-            dealEnabled: this.moreCardsToDeal(),
+            dealEnabled: this.hasMoreCardsToDeal(),
             backEnabled: this.cardsFromIndex >= this.numOfCardsToDeal,
             shuffleEnabled: this.cardsFromIndex >= this.numOfCardsToDeal
         };
