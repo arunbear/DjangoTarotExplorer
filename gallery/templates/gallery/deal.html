@@ -8,6 +8,8 @@
     <script>
         let deck;
 
+        let cardIsReversedAtPos = {}; // Store persistent reversal states
+
         function updateButtonStates(states) {
             $('#btn-deal').prop('disabled', !states.dealEnabled);
             $('#btn-back').prop('disabled', !states.backEnabled);
@@ -30,6 +32,18 @@
             } else {
                 $('#figure-3').css('display', 'none');
             }
+            
+            // Apply reversal states based on actual card numbers (caption)
+            cards.forEach((card, index) => {
+                if (card && card.caption) {
+                    const imageId = `#image-${index + 1}`;
+                    if (cardIsReversedAtPos[card.caption]) {
+                        $(imageId).addClass('rotated');
+                    } else {
+                        $(imageId).removeClass('rotated');
+                    }
+                }
+            });
         }
 
         $(document).ready(function() {
@@ -81,6 +95,24 @@
                 const cardNumber = $(this).data('card');
                 const imageId = `#image-${cardNumber}`;
                 $(imageId).toggleClass('rotated');
+            });
+            
+            // Reversed cards checkbox handler
+            $('#chk-reversed-cards').change(function() {
+                const isReversed = $(this).is(':checked');
+                
+                if (isReversed) {
+                    // Generate and store coin toss results for entire deck (78 cards)
+                    for (let i = 1; i <= 78; i++) {
+                        cardIsReversedAtPos[i] = Math.random() < 0.5; // Store 50% chance result
+                    }
+                } else {
+                    // Clear all reversal states
+                    cardIsReversedAtPos = {};
+                    $('.card').removeClass('rotated');
+                }
+                
+                refreshCards(); // Apply the new reversal states
             });
             
             // Initial render
@@ -183,6 +215,11 @@
         <label>
             Include trumps
             <input type="checkbox" id="chk-include-trumps"/>
+        </label>
+
+        <label>
+            &nbsp; Reversed cards
+            <input type="checkbox" id="chk-reversed-cards"/>
         </label>
 
         &nbsp; Number of cards:
