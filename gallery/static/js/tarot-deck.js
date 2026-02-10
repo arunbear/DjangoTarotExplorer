@@ -42,7 +42,7 @@ class TarotDeck {
         return this.getButtonStates();
     }
 
-    resetDeck() {
+    reset() {
         this.shuffleCards(this.images);
         this.cardsFromIndex = 0;
         return this.getButtonStates();
@@ -54,7 +54,7 @@ class TarotDeck {
         } else {
             this.images = this.pipImages;
         }
-        this.resetDeck();
+        this.reset();
     }
 
     setNumOfCards(num) {

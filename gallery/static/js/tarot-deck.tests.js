@@ -63,7 +63,7 @@ class TarotDeckTests {
             const deck = new TarotDeck(mockImages, 'back.jpg');
             
             deck.deal(); // Move to position 2
-            const states = deck.resetDeck();
+            const states = deck.reset();
             
             assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0 after reset');
             assert.false(states.backEnabled, 'Back should be disabled after reset');

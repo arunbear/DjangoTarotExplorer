@@ -49,7 +49,7 @@
             });
             
             $('#btn-shuffle').on('click', function () {
-                const states = deck.resetDeck();
+                const states = deck.reset();
                 updateButtonStates(states);
                 refreshCards();
             });
