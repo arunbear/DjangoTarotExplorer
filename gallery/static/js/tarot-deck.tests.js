@@ -19,7 +19,7 @@ class TarotDeckTests {
             
             assert.deepEqual(deck.allImages, mockImages, 'allImages should match');
             assert.equal(deck.pipImages.length, 56, 'pipImages should have 56 cards');
-            assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0');
+            assert.equal(deck.displayPosition, 0, 'cardsFromIndex should be 0');
             assert.equal(deck.numOfCardsToDeal, 2, 'numOfCards should be 2');
             assert.equal(deck.backOfCardImgSrc, 'back.jpg', 'backOfCardImgSrc should match');
         });
@@ -45,7 +45,7 @@ class TarotDeckTests {
             assert.false(initialStates.backEnabled, 'Back should be disabled initially');
 
             const states = deck.deal();
-            assert.equal(deck.cardsFromIndex, 2, 'cardsFromIndex should be 2 after dealing');
+            assert.equal(deck.displayPosition, 2, 'cardsFromIndex should be 2 after dealing');
             assert.true(states.backEnabled, 'Back should be enabled after dealing');
         });
 
@@ -55,7 +55,7 @@ class TarotDeckTests {
             deck.deal(); // Move to position 2
             const states = deck.back();
             
-            assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0 after going back');
+            assert.equal(deck.displayPosition, 0, 'cardsFromIndex should be 0 after going back');
             assert.false(states.backEnabled, 'Back should be disabled after going back');
         });
 
@@ -65,7 +65,7 @@ class TarotDeckTests {
             deck.deal(); // Move to position 2
             const states = deck.reset();
             
-            assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0 after reset');
+            assert.equal(deck.displayPosition, 0, 'cardsFromIndex should be 0 after reset');
             assert.false(states.backEnabled, 'Back should be disabled after reset');
             assert.false(states.shuffleEnabled, 'Shuffle should be disabled after reset');
         });
@@ -88,7 +88,7 @@ class TarotDeckTests {
             
             deck.setNumOfCards(3);
             assert.equal(deck.numOfCardsToDeal, 3, 'numOfCards should be 3');
-            assert.equal(deck.cardsFromIndex, 0, 'cardsFromIndex should be 0 after setting num cards');
+            assert.equal(deck.displayPosition, 0, 'cardsFromIndex should be 0 after setting num cards');
         });
 
         QUnit.module('TarotDeck Card Retrieval');
@@ -145,7 +145,7 @@ class TarotDeckTests {
             const deck = new TarotDeck(mockImages, 'back.jpg');
             
             const states = deck.back();
-            assert.equal(deck.cardsFromIndex, 0, 'Should stay at 0');
+            assert.equal(deck.displayPosition, 0, 'Should stay at 0');
             assert.false(states.backEnabled, 'Back should remain disabled');
         });
 
@@ -162,11 +162,11 @@ class TarotDeckTests {
             
             // Last valid deal (shows cards 55 and 56)
             deck.deal();
-            assert.equal(deck.cardsFromIndex, 54, 'Should be at 54 after final deal (showing cards 55-56)');
+            assert.equal(deck.displayPosition, 54, 'Should be at 54 after final deal (showing cards 55-56)');
             
             // Try to deal when no more cards available
             const states = deck.deal();
-            assert.equal(deck.cardsFromIndex, 54, 'Should stay at 54 when no more cards available');
+            assert.equal(deck.displayPosition, 54, 'Should stay at 54 when no more cards available');
             assert.false(states.dealEnabled, 'Deal should be disabled');
         });
 

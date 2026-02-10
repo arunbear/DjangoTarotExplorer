@@ -4,7 +4,7 @@ class TarotDeck {
         this.pipImages = allImages.slice(0, 56);
         this.images = this.pipImages;
         this.backOfCardImgSrc = backOfCardImgSrc;
-        this.cardsFromIndex = 0;
+        this.displayPosition = 0; // 0 .. images.length - 1, tracks the position of the first card to be displayed
         this.numOfCardsToDeal = 2;
         this.shuffleCards(this.images);
     }
@@ -24,27 +24,27 @@ class TarotDeck {
     }
 
     hasMoreCardsToDeal() {
-        return this.cardsFromIndex + this.numOfCardsToDeal < this.images.length;
+        return this.displayPosition + this.numOfCardsToDeal < this.images.length;
     }
 
     deal() {
         if (this.hasMoreCardsToDeal()) {
-            this.cardsFromIndex += this.numOfCardsToDeal;
+            this.displayPosition += this.numOfCardsToDeal;
         }
         return this.getButtonStates();
     }
 
     back() {
-        this.cardsFromIndex = (this.cardsFromIndex - this.numOfCardsToDeal) % this.images.length;
-        if (this.cardsFromIndex < 0) {
-            this.cardsFromIndex = 0;
+        this.displayPosition = (this.displayPosition - this.numOfCardsToDeal) % this.images.length;
+        if (this.displayPosition < 0) {
+            this.displayPosition = 0;
         }
         return this.getButtonStates();
     }
 
     reset() {
         this.shuffleCards(this.images);
-        this.cardsFromIndex = 0;
+        this.displayPosition = 0;
         return this.getButtonStates();
     }
 
@@ -59,21 +59,21 @@ class TarotDeck {
 
     setNumOfCards(num) {
         this.numOfCardsToDeal = num;
-        this.cardsFromIndex = 0;
+        this.displayPosition = 0;
     }
 
     getButtonStates() {
         return {
             dealEnabled: this.hasMoreCardsToDeal(),
-            backEnabled: this.cardsFromIndex >= this.numOfCardsToDeal,
-            shuffleEnabled: this.cardsFromIndex >= this.numOfCardsToDeal
+            backEnabled: this.displayPosition >= this.numOfCardsToDeal,
+            shuffleEnabled: this.displayPosition >= this.numOfCardsToDeal
         };
     }
 
     getCurrentCards() {
         const cards = [];
         for (let i = 0; i < this.numOfCardsToDeal; i++) {
-            const index = this.cardsFromIndex + i;
+            const index = this.displayPosition + i;
             if (index < this.images.length) {
                 cards.push({
                     src: this.images[index],
