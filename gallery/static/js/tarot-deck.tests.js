@@ -202,6 +202,83 @@ class TarotDeckTests {
             assert.true(states.backEnabled, 'Back still enabled');
             assert.true(states.shuffleEnabled, 'Shuffle still enabled');
         });
+
+        QUnit.module('TarotDeck Deal One Functionality');
+
+        QUnit.test('should deal one card correctly', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            const initialPosition = deck.displayPosition;
+            
+            const states = deck.dealOne();
+            
+            assert.equal(deck.displayPosition, initialPosition + 1, 'Should advance by 1 position');
+            assert.deepEqual(deck.positionHistory, [0, 1], 'Should track history correctly');
+            assert.true(states.backEnabled, 'Back should be enabled after dealOne');
+        });
+
+        QUnit.test('should track position history correctly with mixed operations', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            
+            deck.deal(); // position 2, history [0, 2]
+            deck.dealOne(); // position 3, history [0, 2, 3]
+            deck.dealOne(); // position 4, history [0, 2, 3, 4]
+            
+            assert.deepEqual(deck.positionHistory, [0, 2, 3, 4], 'Should track mixed operations');
+            assert.equal(deck.displayPosition, 4, 'Should be at correct position');
+        });
+
+        QUnit.test('should go back using history correctly', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            
+            deck.deal(); // position 2, history [0, 2]
+            deck.dealOne(); // position 3, history [0, 2, 3]
+            
+            const states = deck.back(); // position 2, history [0, 2]
+            assert.equal(deck.displayPosition, 2, 'Should go back to position 2');
+            assert.deepEqual(deck.positionHistory, [0, 2], 'Should update history correctly');
+            assert.true(states.backEnabled, 'Back should still be enabled');
+            
+            deck.back(); // position 0, history [0]
+            assert.equal(deck.displayPosition, 0, 'Should go back to position 0');
+            assert.deepEqual(deck.positionHistory, [0], 'Should have only initial position');
+        });
+
+        QUnit.test('should enable back button based on history length', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            
+            let states = deck.getButtonStates();
+            assert.false(states.backEnabled, 'Back disabled when history length = 1');
+            
+            deck.dealOne();
+            states = deck.getButtonStates();
+            assert.true(states.backEnabled, 'Back enabled when history length = 2');
+            
+            deck.back();
+            states = deck.getButtonStates();
+            assert.false(states.backEnabled, 'Back disabled when history length = 1');
+        });
+
+        QUnit.test('should reset history correctly', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            
+            deck.deal();
+            deck.dealOne();
+            assert.ok(deck.positionHistory.length > 1, 'Should have multiple history entries');
+            
+            deck.reset();
+            assert.deepEqual(deck.positionHistory, [0], 'Should reset to initial history');
+            assert.equal(deck.displayPosition, 0, 'Should reset display position');
+        });
+
+        QUnit.test('should handle dealOne at end of deck', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            deck.displayPosition = mockImages.length - 1; // Move to last position
+            
+            const states = deck.dealOne();
+            
+            assert.equal(deck.displayPosition, mockImages.length - 1, 'Should not advance beyond deck');
+            assert.deepEqual(deck.positionHistory, [0], 'Should not add to history when at end');
+        });
     }
 }
 
