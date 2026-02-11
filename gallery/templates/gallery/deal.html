@@ -8,9 +8,6 @@
     <script>
         let deck;
 
-        let cardIsReversedAtPos = {}; // Store persistent reversal states
-        let cardIsFaceDownAtPos = {}; // Store persistent face-down states
-
         function updateButtonStates(states) {
             $('#btn-deal').prop('disabled', !states.dealEnabled);
             $('#btn-back').prop('disabled', !states.backEnabled);
@@ -19,18 +16,17 @@
 
         function refreshCards() {
             const cards = deck.getCurrentCards();
-            const isFaceDownEnabled = $('#chk-face-down').is(':checked');
             
-            $('#image-1').prop('src', getCardDisplaySrc(cards[0], 1, isFaceDownEnabled));
-            $('#caption-1 .card-number').text(getCardDisplayCaption(cards[0], 1, isFaceDownEnabled));
+            $('#image-1').prop('src', deck.getCardDisplaySrc(cards[0]));
+            $('#caption-1 .card-number').text(deck.getCardDisplayCaption(cards[0]));
             
-            $('#image-2').prop('src', getCardDisplaySrc(cards[1], 2, isFaceDownEnabled));
-            $('#caption-2 .card-number').text(getCardDisplayCaption(cards[1], 2, isFaceDownEnabled));
+            $('#image-2').prop('src', deck.getCardDisplaySrc(cards[1]));
+            $('#caption-2 .card-number').text(deck.getCardDisplayCaption(cards[1]));
             
             if (deck.numOfCardsToDeal === 3) {
                 $('#figure-3').css('display', 'block');
-                $('#image-3').prop('src', getCardDisplaySrc(cards[2], 3, isFaceDownEnabled));
-                $('#caption-3 .card-number').text(getCardDisplayCaption(cards[2], 3, isFaceDownEnabled));
+                $('#image-3').prop('src', deck.getCardDisplaySrc(cards[2]));
+                $('#caption-3 .card-number').text(deck.getCardDisplayCaption(cards[2]));
             } else {
                 $('#figure-3').css('display', 'none');
             }
@@ -39,7 +35,7 @@
             cards.forEach((card, index) => {
                 if (card && card.caption) {
                     const imageId = `#image-${index + 1}`;
-                    const shouldReverse = cardIsReversedAtPos[card.caption];
+                    const shouldReverse = deck.cardIsReversedAtPos[card.caption];
                     console.log(`Card ${card.caption} should reverse: ${shouldReverse}`); // Debug log
                     if (shouldReverse) {
                         $(imageId).addClass('rotated');
@@ -48,28 +44,6 @@
                     }
                 }
             });
-        }
-
-        function getCardDisplaySrc(card, position, isFaceDownEnabled) {
-            if (!card) return deck.backOfCardImgSrc;
-            
-            // If face-down is enabled and this card hasn't been revealed yet, show back
-            if (isFaceDownEnabled && !cardIsFaceDownAtPos[card.caption]) {
-                return deck.backOfCardImgSrc;
-            }
-            
-            return card.src;
-        }
-
-        function getCardDisplayCaption(card, position, isFaceDownEnabled) {
-            if (!card) return '';
-            
-            // If face-down is enabled and this card hasn't been revealed yet, hide caption
-            if (isFaceDownEnabled && !cardIsFaceDownAtPos[card.caption]) {
-                return '';
-            }
-            
-            return card.caption;
         }
 
         $(document).ready(function() {
@@ -125,9 +99,9 @@
                 const card = cards[position];
                 
                 // If face-down is enabled and card exists, reveal it
-                if ($('#chk-face-down').is(':checked') && card && card.caption) {
-                    if (!cardIsFaceDownAtPos[card.caption]) {
-                        cardIsFaceDownAtPos[card.caption] = true;
+                if (deck.faceDownEnabled && card && card.caption) {
+                    if (!deck.cardIsFaceDownAtPos[card.caption]) {
+                        deck.revealCard(card.caption);
                         refreshCards();
                         return; // Don't process selection when revealing
                     }
@@ -157,15 +131,9 @@
             // Reversed cards checkbox handler
             $('#chk-reversed-cards').change(function() {
                 const isReversed = $(this).is(':checked');
+                deck.setReversedCardsEnabled(isReversed);
                 
-                if (isReversed) {
-                    // Generate and store coin toss results for entire deck (78 cards)
-                    for (let i = 1; i <= 78; i++) {
-                        cardIsReversedAtPos[i] = Math.random() < 0.5; // Store 50% chance result
-                    }
-                } else {
-                    // Clear all reversal states
-                    cardIsReversedAtPos = {};
+                if (!isReversed) {
                     $('.card').removeClass('rotated');
                 }
                 
@@ -175,12 +143,7 @@
             // Face down cards checkbox handler
             $('#chk-face-down').change(function() {
                 const isFaceDown = $(this).is(':checked');
-                
-                if (!isFaceDown) {
-                    // Clear all face-down states when disabled
-                    cardIsFaceDownAtPos = {};
-                }
-                
+                deck.setFaceDownEnabled(isFaceDown);
                 refreshCards(); // Apply the new face-down states
             });
             

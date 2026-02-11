@@ -6,6 +6,9 @@ class TarotDeck {
         this.backOfCardImgSrc = backOfCardImgSrc;
         this.displayPosition = 0; // 0 .. images.length - 1, tracks the position of the first card to be displayed
         this.numOfCardsToDeal = 2;
+        this.cardIsReversedAtPos = {}; // Store persistent reversal states
+        this.cardIsFaceDownAtPos = {}; // Store persistent face-down states
+        this.faceDownEnabled = false;
         this.shuffleCards(this.images);
     }
 
@@ -88,6 +91,54 @@ class TarotDeck {
             }
         }
         return cards;
+    }
+
+    getCardDisplaySrc(card) {
+        if (!card) return this.backOfCardImgSrc;
+        
+        // If face-down is enabled and this card hasn't been revealed yet, show back
+        if (this.faceDownEnabled && !this.cardIsFaceDownAtPos[card.caption]) {
+            return this.backOfCardImgSrc;
+        }
+        
+        return card.src;
+    }
+
+    getCardDisplayCaption(card) {
+        if (!card) return '';
+        
+        // If face-down is enabled and this card hasn't been revealed yet, hide caption
+        if (this.faceDownEnabled && !this.cardIsFaceDownAtPos[card.caption]) {
+            return '';
+        }
+        
+        return card.caption;
+    }
+
+    revealCard(cardCaption) {
+        if (cardCaption) {
+            this.cardIsFaceDownAtPos[cardCaption] = true;
+        }
+    }
+
+    setFaceDownEnabled(enabled) {
+        this.faceDownEnabled = enabled;
+        if (!enabled) {
+            // Clear all face-down states when disabled
+            this.cardIsFaceDownAtPos = {};
+        }
+    }
+
+    setReversedCardsEnabled(enabled) {
+        if (enabled) {
+            // Generate and store coin toss results for entire deck (78 cards)
+            for (let i = 1; i <= 78; i++) {
+                this.cardIsReversedAtPos[i] = Math.random() < 0.5; // Store 50% chance result
+            }
+        } else {
+            // Clear all reversal states
+            this.cardIsReversedAtPos = {};
+        }
     }
 }
 
