@@ -9,6 +9,7 @@
         let deck;
 
         let cardIsReversedAtPos = {}; // Store persistent reversal states
+        let cardIsFaceDownAtPos = {}; // Store persistent face-down states
 
         function updateButtonStates(states) {
             $('#btn-deal').prop('disabled', !states.dealEnabled);
@@ -18,17 +19,18 @@
 
         function refreshCards() {
             const cards = deck.getCurrentCards();
+            const isFaceDownEnabled = $('#chk-face-down').is(':checked');
             
-            $('#image-1').prop('src', cards[0]?.src || deck.backOfCardImgSrc);
-            $('#caption-1 .card-number').text(cards[0]?.caption || '');
+            $('#image-1').prop('src', getCardDisplaySrc(cards[0], 1, isFaceDownEnabled));
+            $('#caption-1 .card-number').text(getCardDisplayCaption(cards[0], 1, isFaceDownEnabled));
             
-            $('#image-2').prop('src', cards[1]?.src || deck.backOfCardImgSrc);
-            $('#caption-2 .card-number').text(cards[1]?.caption || '');
+            $('#image-2').prop('src', getCardDisplaySrc(cards[1], 2, isFaceDownEnabled));
+            $('#caption-2 .card-number').text(getCardDisplayCaption(cards[1], 2, isFaceDownEnabled));
             
             if (deck.numOfCardsToDeal === 3) {
                 $('#figure-3').css('display', 'block');
-                $('#image-3').prop('src', cards[2]?.src || deck.backOfCardImgSrc);
-                $('#caption-3 .card-number').text(cards[2]?.caption || '');
+                $('#image-3').prop('src', getCardDisplaySrc(cards[2], 3, isFaceDownEnabled));
+                $('#caption-3 .card-number').text(getCardDisplayCaption(cards[2], 3, isFaceDownEnabled));
             } else {
                 $('#figure-3').css('display', 'none');
             }
@@ -46,6 +48,28 @@
                     }
                 }
             });
+        }
+
+        function getCardDisplaySrc(card, position, isFaceDownEnabled) {
+            if (!card) return deck.backOfCardImgSrc;
+            
+            // If face-down is enabled and this card hasn't been revealed yet, show back
+            if (isFaceDownEnabled && !cardIsFaceDownAtPos[card.caption]) {
+                return deck.backOfCardImgSrc;
+            }
+            
+            return card.src;
+        }
+
+        function getCardDisplayCaption(card, position, isFaceDownEnabled) {
+            if (!card) return '';
+            
+            // If face-down is enabled and this card hasn't been revealed yet, hide caption
+            if (isFaceDownEnabled && !cardIsFaceDownAtPos[card.caption]) {
+                return '';
+            }
+            
+            return card.caption;
         }
 
         $(document).ready(function() {
@@ -95,6 +119,20 @@
             $('.card').on('click', function(e) {
                 e.stopPropagation();
                 
+                const cardId = $(this).attr('id');
+                const position = parseInt(cardId.split('-')[1]) - 1;
+                const cards = deck.getCurrentCards();
+                const card = cards[position];
+                
+                // If face-down is enabled and card exists, reveal it
+                if ($('#chk-face-down').is(':checked') && card && card.caption) {
+                    if (!cardIsFaceDownAtPos[card.caption]) {
+                        cardIsFaceDownAtPos[card.caption] = true;
+                        refreshCards();
+                        return; // Don't process selection when revealing
+                    }
+                }
+                
                 // If clicking the already selected card, deselect it
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
@@ -132,6 +170,18 @@
                 }
                 
                 refreshCards(); // Apply the new reversal states
+            });
+            
+            // Face down cards checkbox handler
+            $('#chk-face-down').change(function() {
+                const isFaceDown = $(this).is(':checked');
+                
+                if (!isFaceDown) {
+                    // Clear all face-down states when disabled
+                    cardIsFaceDownAtPos = {};
+                }
+                
+                refreshCards(); // Apply the new face-down states
             });
             
             // Initial render
@@ -249,6 +299,11 @@
         <label>
             &nbsp; Reversed cards
             <input type="checkbox" id="chk-reversed-cards"/>
+        </label>
+
+        <label>
+            &nbsp; Face down
+            <input type="checkbox" id="chk-face-down"/>
         </label>
 
         &nbsp; Number of cards:
