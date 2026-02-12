@@ -134,7 +134,7 @@ class GalleryIndexViewSpecs(TestCase):
         button_holder = soup.find("div", {"class": "button-holder"})
         self.assertIsNotNone(button_holder)
         buttons = button_holder.select("button")
-        self.assertEqual(len(buttons), 3)
+        self.assertEqual(len(buttons), 4)
 
 
 class GridViewSpec:
