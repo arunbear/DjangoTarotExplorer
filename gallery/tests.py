@@ -129,7 +129,7 @@ class GalleryIndexViewSpecs(TestCase):
         self.assertIsNotNone(card_holder)
 
         cards = card_holder.select("img")
-        self.assertEqual(len(cards), 3)
+        self.assertEqual(len(cards), 4, "4 cards at most can be displayed")
 
         button_holder = soup.find("div", {"class": "button-holder"})
         self.assertIsNotNone(button_holder)

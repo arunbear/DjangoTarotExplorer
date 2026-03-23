@@ -89,6 +89,10 @@ class TarotDeckTests {
             deck.setNumOfCards(3);
             assert.equal(deck.numOfCardsToDeal, 3, 'numOfCards should be 3');
             assert.equal(deck.displayPosition, 0, 'cardsFromIndex should be 0 after setting num cards');
+            
+            deck.setNumOfCards(4);
+            assert.equal(deck.numOfCardsToDeal, 4, 'numOfCards should be 4');
+            assert.equal(deck.displayPosition, 0, 'cardsFromIndex should be 0 after setting num cards');
         });
 
         QUnit.module('TarotDeck Card Retrieval');
@@ -103,6 +107,18 @@ class TarotDeckTests {
             assert.ok(cards[0].caption !== undefined, 'Card 0 should have caption');
             assert.equal(cards[0].caption, 1, 'Card 0 caption should be 1');
             assert.equal(cards[1].caption, 2, 'Card 1 caption should be 2');
+        });
+
+        QUnit.test('should get 4 cards correctly', assert => {
+            const deck = new TarotDeck(mockImages, 'back.jpg');
+            deck.setNumOfCards(4);
+            
+            const cards = deck.getCurrentCards();
+            assert.equal(cards.length, 4, 'Should return 4 cards');
+            assert.equal(cards[0].caption, 1, 'Card 0 caption should be 1');
+            assert.equal(cards[1].caption, 2, 'Card 1 caption should be 2');
+            assert.equal(cards[2].caption, 3, 'Card 2 caption should be 3');
+            assert.equal(cards[3].caption, 4, 'Card 3 caption should be 4');
         });
 
         QUnit.test('should detect when more cards can be dealt', assert => {
@@ -137,6 +153,24 @@ class TarotDeckTests {
             assert.equal(cards.length, 3, 'Should return 3 cards');
             assert.equal(cards[2].src, 'back.jpg', 'Third card should be back of card due to uneven division');
             assert.equal(cards[2].caption, '', 'Third card should have empty caption');
+        });
+
+        QUnit.test('should handle edge case for 4 cards with uneven deck', assert => {
+            // Use only pip cards (56) - 56 % 4 = 0, so should divide evenly
+            const pipCardsOnly = mockImages.slice(0, 56);
+            const deck = new TarotDeck(pipCardsOnly, 'back.jpg');
+            deck.setNumOfCards(4);
+            
+            // Deal until near the end (56 cards / 4 per deal = 14 full deals, 0 cards left)
+            for (const _ of Array(13)) {
+                deck.deal();
+            }
+            
+            const cards = deck.getCurrentCards();
+            
+            assert.equal(cards.length, 4, 'Should return 4 cards');
+            assert.notEqual(cards[3].src, 'back.jpg', 'Fourth card should not be back of card due to even division');
+            assert.notEqual(cards[3].caption, '', 'Fourth card should not have empty caption');
         });
 
         QUnit.module('TarotDeck Edge Cases');
@@ -199,6 +233,27 @@ class TarotDeckTests {
             deck.deal();
             states = deck.getButtonStates();
             assert.false(states.dealEnabled, 'Deal disabled when exactly 2 cards remaining (54+2=56 !< 56)');
+            assert.true(states.backEnabled, 'Back still enabled');
+            assert.true(states.shuffleEnabled, 'Shuffle still enabled');
+        });
+
+        QUnit.test('should handle button states correctly for 4 cards throughout lifecycle', assert => {
+            // Use 56 cards to match the pipImages logic
+            const exactly56Cards = Array.from({length: 56}, (_, i) => `card-${i + 1}.jpg`);
+            const deck = new TarotDeck(exactly56Cards, 'back.jpg');
+            deck.setNumOfCards(4);
+            
+            let states = deck.getButtonStates();
+            assert.true(states.dealEnabled, 'Deal enabled initially for 4 cards');
+            assert.false(states.backEnabled, 'Back disabled initially');
+            assert.false(states.shuffleEnabled, 'Shuffle disabled initially');
+            
+            // Deal until near the end (13 deals = 52 cards dealt, 4 cards left)
+            for (const _ of Array(13)) {
+                deck.deal();
+            }
+            states = deck.getButtonStates();
+            assert.false(states.dealEnabled, 'Deal disabled when exactly 4 cards remaining (52+4=56 !< 56)');
             assert.true(states.backEnabled, 'Back still enabled');
             assert.true(states.shuffleEnabled, 'Shuffle still enabled');
         });
