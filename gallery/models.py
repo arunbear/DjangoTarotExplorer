@@ -48,7 +48,7 @@ deck = Deck(
         Card('3/3b', 'Wands06.jpg'),
         Card('e/e4', 'Wands07.jpg'),
         Card('6/6b', 'Wands08.jpg'),
-        Card('4/4d', 'Tarot_Nine_of_Wands.jpg'),
+        Card('e/e7', 'Wands09.jpg'),
         Card('0/0b', 'Wands10.jpg'),
         Card('6/6a', 'Wands11.jpg'),
         Card('1/16', 'Wands12.jpg'),
